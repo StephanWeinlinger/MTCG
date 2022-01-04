@@ -8,24 +8,35 @@ using System.Threading.Tasks;
 
 namespace MTCG.Http {
 	class HttpResponse {
+		// DON'T FORGET TO UNSERIALIZE
 		public string Content { get; set; }
-		public Dictionary<string, string> Headers { get; set; }
-		// type of respone OK, ...
+		public IDictionary<string, string> Headers { get; set; }
 
 		private StreamWriter _writer;
 
 		public HttpResponse(TcpClient client) {
 			_writer = new (client.GetStream()) { AutoFlush = true };
-			
+			Headers = new Dictionary<string, string>();
+			SetDefaultHeaders();
 		}
 
-		public void Send() {
+		private void SetDefaultHeaders() {
+			Headers.Add("Server", "MTCG-Weinlinger");
+			Headers.Add("Content-Type", "application/json; charset=utf-8");
+		}
+
+		public void Send(ResponseContent.ResponseContent responseContent) {
 			// write header
+			_writer.WriteLine($"HTTP/1.1 {responseContent.Code} {responseContent.Message}");
 			foreach(KeyValuePair<string, string> entry in Headers) {
 				_writer.WriteLine($"{entry.Key}: {entry.Value}");
 			}
+			_writer.Write($"Content-Length: {responseContent.Content.Length}");
 			_writer.WriteLine("");
 			// write content
+			_writer.WriteLine(responseContent.Content);
+			_writer.Flush();
+			_writer.Close();
 		}
 
 	}

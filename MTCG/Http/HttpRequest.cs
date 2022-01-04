@@ -14,15 +14,17 @@ namespace MTCG.Http {
 		public HttpMethod Method { get; private set; }
 		public string FullPath { get; private set; }
 		public string Content { get; private set; }
-		public Dictionary<string, string> Headers { get; }
-		public List<string> PathContents { get; set; }
-		public Dictionary<string, string> QueryParameters { get; set; }
+		public IDictionary<string, string> Headers { get; }
+		public IList<string> PathContents { get; set; }
+		public IDictionary<string, string> QueryParameters { get; set; }
 
 		private StreamReader _reader;
 
 		public HttpRequest(TcpClient client) {
 			_reader = new(client.GetStream());
-			Headers = new();
+			Headers = new Dictionary<string, string>();
+			PathContents = new List<string>();
+			QueryParameters = new Dictionary<string, string>();
 			Method = HttpMethod.Undefined;
 			Parse();
 		}
@@ -86,10 +88,12 @@ namespace MTCG.Http {
 			// get path contents
 			string[] parts = FullPath.Split("?");
 			PathContents = parts[0].Split("/").ToList();
-			// get query parameters
-			NameValueCollection tmpParameters = HttpUtility.ParseQueryString(parts[1]);
-			// convert to dictionary
-			QueryParameters = tmpParameters.AllKeys.ToDictionary(t => t, t => tmpParameters[t]);
+			// get query parameters if they are set
+			if(parts.Length == 2) {
+				NameValueCollection tmpParameters = HttpUtility.ParseQueryString(parts[1]);
+				// convert to dictionary
+				QueryParameters = tmpParameters.AllKeys.ToDictionary(t => t, t => tmpParameters[t]);
+			}
 		}
 	}
 }
