@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using MTCG.Controller;
 using MTCG.Http;
 using MTCG.Http.ResponseContent;
 
@@ -10,10 +11,13 @@ namespace MTCG.Handler {
 			try {
 				// read request data, return body, url, method
 				HttpRequest request = new HttpRequest(client);
-				request.Log();
+				//request.Log();
 				// switch over different routes and call right controller method
 				switch(request.PathContents[0]) {
 					case "users":
+						var controller = new UserController(request);
+						controller.Handle();
+						responseContent = controller.ResponseContent;
 						break;
 					case "sessions":
 						break;
@@ -35,8 +39,6 @@ namespace MTCG.Handler {
 						responseContent = new ResponseNotFound();
 						break;
 				}
-				// returns ResponseContent
-				responseContent = new ResponseOK();
 			} catch(Exception e) {
 				Console.WriteLine(e.Message);
 			}

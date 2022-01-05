@@ -4,15 +4,20 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MTCG.Http;
+using MTCG.Http.ResponseContent;
 
 namespace MTCG.Controller {
 	abstract class Controller {
-		//private IDbConnection _connection;
+		protected Database.Database Database;
+		public HttpRequest Request;
+		public ResponseContent ResponseContent;
 
-		protected Controller() {
-			
+		protected Controller(HttpRequest request) {
+			Request = request;
+			Database = new Database.Database();
 		}
 
-		protected abstract void Handle();
+		public abstract void Handle();
 	}
 }

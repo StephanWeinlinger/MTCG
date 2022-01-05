@@ -87,7 +87,7 @@ namespace MTCG.Http {
 		private void ParsePath() {
 			// get path contents
 			string[] parts = FullPath.Split("?");
-			PathContents = parts[0].Split("/").ToList();
+			PathContents = parts[0].Substring(1).Split("/").ToList();
 			// get query parameters if they are set
 			if(parts.Length == 2) {
 				NameValueCollection tmpParameters = HttpUtility.ParseQueryString(parts[1]);

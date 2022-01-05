@@ -12,9 +12,8 @@ namespace MTCG.Database {
 		private IDbConnection _connection;
 		private IDbCommand _command;
 		public Database() {
-			_connection = new NpgsqlConnection("Host=localhost;Username=postgres;Password=root;Database=MTCG");
+			_connection = new NpgsqlConnection("Host=localhost;Username=postgres;Password=root;Database=mtcg");
 			_connection.Open();
-			_command = _connection.CreateCommand();
 		}
 
 		~Database() {
@@ -22,7 +21,8 @@ namespace MTCG.Database {
 		}
 
 		// TODO allow length for fields
-		public void PrepareCommand(string statement, Dictionary<string, NpgsqlDbType> fields) {
+		public void PrepareCommand(string statement, IDictionary<string, NpgsqlDbType> fields) {
+			_command = _connection.CreateCommand();
 			_command.CommandText = statement;
 			NpgsqlCommand c = _command as NpgsqlCommand;
 			foreach(KeyValuePair<string, NpgsqlDbType> entry in fields) {
@@ -35,23 +35,35 @@ namespace MTCG.Database {
 			c.Prepare();
 		}
 
-		public void ExecuteCommandWithoutRead(Dictionary<string, string> data) {
-			NpgsqlCommand c = _command as NpgsqlCommand;
-			foreach(KeyValuePair<string, string> entry in data) {
-				c.Parameters[entry.Key].Value = entry.Value;
+		// TODO maybe also use amount of executing to use prepared?
+		public bool ExecuteCommandWithoutRead(IDictionary<string, string> data) {
+			try {
+				NpgsqlCommand c = _command as NpgsqlCommand;
+				foreach(KeyValuePair<string, string> entry in data) {
+					c.Parameters[entry.Key].Value = entry.Value;
+				}
+				_command.ExecuteNonQuery();
+			} catch(Exception e) {
+				Console.WriteLine("exception in database");
+				Console.WriteLine(e.Message);
+				return false;
 			}
-
-			_command.ExecuteNonQuery();
+			return true;
 		}
 
-		public IDataReader ExecuteCommandWithRead(Dictionary<string, string> data) {
-			NpgsqlCommand c = _command as NpgsqlCommand;
-			foreach(KeyValuePair<string, string> entry in data) {
-				c.Parameters[entry.Key].Value = entry.Value;
+		public IDataReader ExecuteCommandWithRead(IDictionary<string, string> data) {
+			try {
+				NpgsqlCommand c = _command as NpgsqlCommand;
+				foreach(KeyValuePair<string, string> entry in data) {
+					c.Parameters[entry.Key].Value = entry.Value;
+				}
+				IDataReader reader = _command.ExecuteReader();
+				return reader;
+			} catch(Exception e) {
+				Console.WriteLine("exception in database");
+				Console.WriteLine(e.Message);
 			}
-
-			IDataReader reader = _command.ExecuteReader();
-			return reader;
+			return null;
 			// TODO you have to remember to close the reader
 		}
 	}
