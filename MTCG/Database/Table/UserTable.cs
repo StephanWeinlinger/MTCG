@@ -10,13 +10,13 @@ using NpgsqlTypes;
 namespace MTCG.Database.Table {
 	static class UserTable {
 
-		public static IStorage GetUserByToken(Database db, IDictionary<string, string> data) {
+		public static UserStorage GetUserByToken(Database db, IDictionary<string, string> data) {
 			string statement = "SELECT * FROM \"user\" WHERE token = @token";
 			var fields = new Dictionary<string, NpgsqlDbType> {
 				{ "token", NpgsqlDbType.Varchar },
 			};
 			db.PrepareCommand(statement, fields);
-			IStorage user = ReadUser(db.ExecuteCommandWithRead(data));
+			UserStorage user = ReadUser(db.ExecuteCommandWithRead(data));
 			return user;
 		}
 
@@ -56,8 +56,8 @@ namespace MTCG.Database.Table {
 			return id;
 		}
 
-		private static IStorage ReadUser(IDataReader reader) {
-			IStorage user;
+		private static UserStorage ReadUser(IDataReader reader) {
+			UserStorage user;
 			if(reader != null && reader.Read()) {
 				user = new UserStorage(
 					reader.GetInt32(0),
@@ -70,6 +70,7 @@ namespace MTCG.Database.Table {
 					reader.GetString(7),
 					reader.GetString(8)
 				);
+				reader.Close();
 			} else {
 				user = null;
 			}

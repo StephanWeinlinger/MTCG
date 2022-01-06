@@ -13,7 +13,7 @@ namespace MTCG.Parse {
 			var neededAmount = 0;
 			switch(type) {
 				case DeserializeType.EDIT_USER:
-					neededEntries.AddRange(new List<string> { "displayname", "bio", "image" });
+					neededEntries.AddRange(new List<string> { "displayname", "bio", "status" });
 					break;
 				case DeserializeType.CREATE_TRADE:
 					neededEntries.AddRange(new List<string> { "cardID", "wantedType", "wantedElement", "minDamage" });
@@ -33,7 +33,6 @@ namespace MTCG.Parse {
 					neededEntries.AddRange(new List<string> { "username", "password" });
 					break;
 			}
-
 			IEnumerable values = null;
 			var contentType = typeof(T);
 			if(contentType == typeof(List<string>)) {

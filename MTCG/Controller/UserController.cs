@@ -16,12 +16,14 @@ namespace MTCG.Controller {
 		public override void Handle() {
 			switch(Request.Method) {
 				case HttpMethod.GET:
+					CheckAuth();
 					GetUser();
 					break;
 				case HttpMethod.POST:
 					InsertUser();
 					break;
 				case HttpMethod.PUT:
+					CheckAuth();
 					UpdateUser();
 					break;
 				default:
@@ -32,9 +34,9 @@ namespace MTCG.Controller {
 
 		private void GetUser() {
 			var data = new Dictionary<string, string> {
-				{ "token", "admin-MTCGToken" }
+				{ "token", Request.Authorization }
 			};
-			IStorage user = UserTable.GetUserByToken(Database, data);
+			UserStorage user = UserTable.GetUserByToken(Database, data);
 			if(user == null) {
 				ResponseContent = new ResponseBadRequest();
 				return;
@@ -45,6 +47,7 @@ namespace MTCG.Controller {
 
 		private void InsertUser() {
 			var data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.REGISTER_USER);
+			data.Add("token", data["username"] + "-MTCGToken");
 			int id = UserTable.InsertUser(Database, data);
 			if(id == -1) {
 				ResponseContent = new ResponseBadRequest();
@@ -55,6 +58,7 @@ namespace MTCG.Controller {
 
 		private void UpdateUser() {
 			var data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.EDIT_USER);
+			data.Add("token", Request.Authorization);
 			int id = UserTable.UpdateUser(Database, data);
 			if(id == -1) {
 				ResponseContent = new ResponseBadRequest();

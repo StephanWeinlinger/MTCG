@@ -40,6 +40,7 @@ namespace MTCG.Handler {
 						break;
 				}
 			} catch(Exception e) {
+				responseContent = new ResponseBadRequest();
 				Console.WriteLine(e.Message);
 			}
 			finally {

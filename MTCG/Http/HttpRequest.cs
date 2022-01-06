@@ -14,6 +14,7 @@ namespace MTCG.Http {
 		public HttpMethod Method { get; private set; }
 		public string FullPath { get; private set; }
 		public string Content { get; private set; }
+		public string Authorization { get; private set; }
 		public IDictionary<string, string> Headers { get; }
 		public IList<string> PathContents { get; set; }
 		public IDictionary<string, string> QueryParameters { get; set; }
@@ -26,6 +27,7 @@ namespace MTCG.Http {
 			PathContents = new List<string>();
 			QueryParameters = new Dictionary<string, string>();
 			Method = HttpMethod.Undefined;
+			Authorization = "";
 			Parse();
 		}
 
@@ -35,6 +37,7 @@ namespace MTCG.Http {
 			if(Method == HttpMethod.POST || Method == HttpMethod.PUT) {
 				GetContent();
 			}
+			ParseAuthorization();
 			ParsePath();
 		}
 
@@ -82,6 +85,15 @@ namespace MTCG.Http {
 			char[] buffer = new char[length];
 			_reader.Read(buffer, 0, length);
 			Content = new string(buffer);
+		}
+
+		private void ParseAuthorization() {
+			if(Headers.ContainsKey("Authorization")) {
+				var parts = Headers["Authorization"].Split(" ");
+				if(parts.Length == 2) {
+					Authorization = parts[1];
+				}
+			}
 		}
 
 		private void ParsePath() {
