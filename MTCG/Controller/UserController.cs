@@ -7,6 +7,7 @@ using MTCG.Database.Storage;
 using MTCG.Database.Table;
 using MTCG.Http;
 using MTCG.Http.ResponseContent;
+using MTCG.Parse;
 
 namespace MTCG.Controller {
 	class UserController : Controller {
@@ -43,11 +44,7 @@ namespace MTCG.Controller {
 
 
 		private void InsertUser() {
-			var data = new Dictionary<string, string> {
-				{ "username", "esfd" },
-				{ "password", "asdf" },
-				{ "token", "asfased" }
-			};
+			var data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.REGISTER_USER);
 			int id = UserTable.InsertUser(Database, data);
 			if(id == -1) {
 				ResponseContent = new ResponseBadRequest();
@@ -57,12 +54,7 @@ namespace MTCG.Controller {
 		}
 
 		private void UpdateUser() {
-			var data = new Dictionary<string, string> {
-				{ "displayname", "esfd" },
-				{ "bio", "asdf" },
-				{ "status", "asfased" },
-				{ "token", "admin-MTCGToken" }
-			};
+			var data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.EDIT_USER);
 			int id = UserTable.UpdateUser(Database, data);
 			if(id == -1) {
 				ResponseContent = new ResponseBadRequest();
