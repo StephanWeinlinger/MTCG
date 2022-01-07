@@ -10,48 +10,48 @@ using NpgsqlTypes;
 namespace MTCG.Database.Table {
 	static class UserTable {
 
-		public static UserStorage GetUserByToken(Database db, IDictionary<string, string> data) {
-			string statement = "SELECT * FROM \"user\" WHERE token = @token";
-			var fields = new Dictionary<string, NpgsqlDbType> {
+		public static UserStorage GetUserByToken(Database db) {
+			db.Statement = "SELECT * FROM \"user\" WHERE token = @token";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
 				{ "token", NpgsqlDbType.Varchar },
 			};
-			db.PrepareCommand(statement, fields);
-			UserStorage user = ReadUser(db.ExecuteCommandWithRead(data));
+			db.PrepareCommand();
+			UserStorage user = ReadUser(db.ExecuteCommandWithRead());
 			return user;
 		}
 
-		public static UserStorage GetUserByUsername(Database db, IDictionary<string, string> data) {
-			string statement = "SELECT * FROM \"user\" WHERE username = @username";
-			var fields = new Dictionary<string, NpgsqlDbType> {
+		public static UserStorage GetUserByUsername(Database db) {
+			db.Statement = "SELECT * FROM \"user\" WHERE username = @username";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
 				{ "username", NpgsqlDbType.Varchar },
 			};
-			db.PrepareCommand(statement, fields);
-			UserStorage user = ReadUser(db.ExecuteCommandWithRead(data));
+			db.PrepareCommand();
+			UserStorage user = ReadUser(db.ExecuteCommandWithRead());
 			return user;
 		}
 
-		public static int InsertUser(Database db, IDictionary<string, string> data) {
-			string statement = "INSERT INTO \"user\" (username, password, token) VALUES (@username, @password, @token) RETURNING id";
-			var fields = new Dictionary<string, NpgsqlDbType> {
+		public static int InsertUser(Database db) {
+			db.Statement = "INSERT INTO \"user\" (username, password, token) VALUES (@username, @password, @token) RETURNING id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
 				{ "username", NpgsqlDbType.Varchar },
 				{ "password", NpgsqlDbType.Varchar },
 				{ "token", NpgsqlDbType.Varchar }
 			};
-			db.PrepareCommand(statement, fields);
-			int id = ReadId(db.ExecuteCommandWithRead(data));
+			db.PrepareCommand();
+			int id = ReadId(db.ExecuteCommandWithRead());
 			return id;
 		}
 
-		public static int UpdateUser(Database db, IDictionary<string, string> data) {
-			string statement = "UPDATE \"user\" SET displayname = @displayname, bio = @bio, status = @status WHERE token = @token RETURNING id";
-			var fields = new Dictionary<string, NpgsqlDbType> {
+		public static int UpdateUser(Database db) {
+			db.Statement = "UPDATE \"user\" SET displayname = @displayname, bio = @bio, status = @status WHERE id = @id RETURNING id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
 				{ "displayname", NpgsqlDbType.Varchar },
 				{ "bio", NpgsqlDbType.Varchar },
 				{ "status", NpgsqlDbType.Varchar },
-				{ "token", NpgsqlDbType.Varchar }
+				{ "id", NpgsqlDbType.Integer }
 			};
-			db.PrepareCommand(statement, fields);
-			int id = ReadId(db.ExecuteCommandWithRead(data));
+			db.PrepareCommand();
+			int id = ReadId(db.ExecuteCommandWithRead());
 			return id;
 		}
 

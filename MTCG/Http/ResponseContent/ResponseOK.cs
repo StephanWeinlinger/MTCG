@@ -5,7 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Http.ResponseContent {
-	class ResponseOK : ResponseContent {
-		public ResponseOK() : base(200, "OK") {}
+	class ResponseOk : ResponseContent {
+		public ResponseOk() : base(200, "OK") {
+			Error = false;
+		}
+
+		public ResponseOk(string content, bool isMessage) : base(200, "OK") {
+			Error = false;
+			SetContent(content,isMessage);
+		}
 	}
 }

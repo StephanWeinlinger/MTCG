@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using MTCG.Controller;
+using MTCG.Exception;
 using MTCG.Http;
 using MTCG.Http.ResponseContent;
 
@@ -39,9 +40,11 @@ namespace MTCG.Handler {
 						responseContent = new ResponseNotFound();
 						break;
 				}
-			} catch(Exception e) {
-				responseContent = new ResponseBadRequest();
-				Console.WriteLine(e.Message);
+			} catch(FailedAuthException e) {
+				responseContent = new ResponseUnauthorized(e.Message, true);
+			} 
+			catch(System.Exception e) {
+				responseContent = new ResponseBadRequest(e.Message, true);
 			}
 			finally {
 				HttpResponse response = new HttpResponse(client);

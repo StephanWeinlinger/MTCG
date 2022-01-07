@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace MTCG.Http.ResponseContent {
 	class ResponseUnauthorized : ResponseContent {
-		public ResponseUnauthorized() : base(401, "Unauthorized") {}
+		public ResponseUnauthorized() : base(401, "Unauthorized") {
+			Error = true;
+		}
+
+		public ResponseUnauthorized(string content, bool isMessage) : base(401, "Unauthorized") {
+			Error = true;
+			SetContent(content,isMessage);
+		}
 	}
 }

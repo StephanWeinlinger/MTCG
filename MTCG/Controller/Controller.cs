@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MTCG.Database.Storage;
 using MTCG.Database.Table;
+using MTCG.Exception;
 using MTCG.Http;
 using MTCG.Http.ResponseContent;
 
@@ -26,14 +27,14 @@ namespace MTCG.Controller {
 
 		protected void CheckAuth() {
 			if(Request.Authorization.Length == 0) {
-				throw new ArgumentException("User authorization failed");
+				throw new FailedAuthException("User authorization failed");
 			}
-			var data = new Dictionary<string, string> {
+			Database.Data = new Dictionary<string, string> {
 				{ "token", Request.Authorization }
 			};
-			CurrentUser = UserTable.GetUserByToken(Database, data);
+			CurrentUser = UserTable.GetUserByToken(Database);
 			if(CurrentUser == null || !CurrentUser.IsLoggedIn) {
-				throw new ArgumentException("User authorization failed");
+				throw new FailedAuthException("User authorization failed");
 			}
 			CurrentUserId = CurrentUser.Id.ToString();
 		}

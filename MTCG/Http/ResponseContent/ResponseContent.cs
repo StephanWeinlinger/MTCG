@@ -6,15 +6,33 @@ using System.Threading.Tasks;
 
 namespace MTCG.Http.ResponseContent {
 	class ResponseContent {
-		// DON'T FORGET TO SERIALIZE EXTERNALLY
-		public string Content { get; set; }
+		public string Content { get; private set; }
 		public int Code { get; private set; }
 		public string Message { get; private set; }
+		protected bool Error;
 
 		protected ResponseContent(int code, string message) {
 			Code = code;
 			Message = message;
 			Content = "";
+		}
+
+		protected ResponseContent(int code, string message, string content, bool isMessage) {
+			Code = code;
+			Message = message;
+			Content = "";
+		}
+
+		public void SetContent(string content, bool isMessage) {
+			// sets simple messages
+			if(isMessage) {
+				Content = $"{{\"error\": {Error.ToString().ToLower()}, \"message\": \"{content}\"}}";
+				return;
+			}
+			// sets objects
+			if(!Error) {
+				Content = content;
+			}
 		}
 	}
 }

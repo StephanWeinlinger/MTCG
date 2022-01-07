@@ -70,7 +70,7 @@ namespace MTCG.Parse {
 
 		private static void CheckAmount<T>(IList<T> values, int amount) {
 			if(values.Count != amount) {
-				throw new ArgumentException("Body contents don't match with requirements amount");
+				throw new ArgumentException("Body contents don't match with requirements");
 			}
 		}
 	}

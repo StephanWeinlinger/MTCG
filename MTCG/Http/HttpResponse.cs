@@ -31,7 +31,6 @@ namespace MTCG.Http {
 			foreach(KeyValuePair<string, string> entry in Headers) {
 				_writer.WriteLine($"{entry.Key}: {entry.Value}");
 			}
-			_writer.Write($"Content-Length: {responseContent.Content.Length}");
 			_writer.WriteLine("");
 			// write content
 			_writer.WriteLine(responseContent.Content);

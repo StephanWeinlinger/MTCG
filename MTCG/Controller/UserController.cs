@@ -32,45 +32,44 @@ namespace MTCG.Controller {
 			}
 		}
 
+		// TODO dont get the password
 		private void GetUser() {
 			UserStorage user = null;
 			if(Request.PathContents.Count == 2 && Request.PathContents[1] == CurrentUser.Username) {
-				var data = new Dictionary<string, string> {
+				Database.Data = new Dictionary<string, string> {
 					{ "username", Request.PathContents[1] }
 				};
-				user = UserTable.GetUserByUsername(Database, data);
+				user = UserTable.GetUserByUsername(Database);
 			}
 			if(user == null) {
-				ResponseContent = new ResponseBadRequest();
-				return;
+				throw new ArgumentException("User could not be found");
 			}
-			ResponseContent = new ResponseOK();
+			ResponseContent = new ResponseOk();
+			ResponseContent.SetContent(JsonSerializer.Serialize(user), false);
 		}
 
 
 		private void InsertUser() {
-			var data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.REGISTER_USER);
-			data.Add("token", data["username"] + "-MTCGToken");
-			int id = UserTable.InsertUser(Database, data);
+			Database.Data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.REGISTER_USER);
+			Database.Data.Add("token", Database.Data["username"] + "-MTCGToken");
+			int id = UserTable.InsertUser(Database);
 			if(id == -1) {
-				ResponseContent = new ResponseBadRequest();
-				return;
+				throw new ArgumentException("User could not be inserted");
 			}
-			ResponseContent = new ResponseOK();
+			ResponseContent = new ResponseOk("User was inserted", true);
 		}
 
 		private void UpdateUser() {
 			int id = -1;
 			if(Request.PathContents.Count == 2 && Request.PathContents[1] == CurrentUser.Username) {
-				var data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.EDIT_USER);
-				data.Add("id", CurrentUserId);
-				id = UserTable.UpdateUser(Database, data);
+				Database.Data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.EDIT_USER);
+				Database.Data.Add("id", CurrentUserId);
+				id = UserTable.UpdateUser(Database);
 			}
 			if(id == -1) {
-				ResponseContent = new ResponseBadRequest();
-				return;
+				throw new ArgumentException("User could not be updated");
 			}
-			ResponseContent = new ResponseOK();
+			ResponseContent = new ResponseOk("User was updated", true);
 		}
 	}
 }

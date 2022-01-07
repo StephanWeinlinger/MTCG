@@ -11,6 +11,9 @@ namespace MTCG.Database {
 	class Database {
 		private IDbConnection _connection;
 		private IDbCommand _command;
+		public string Statement;
+		public IDictionary<string, NpgsqlDbType> Fields;
+		public IDictionary<string, string> Data;
 		public Database() {
 			_connection = new NpgsqlConnection("Host=localhost;Username=postgres;Password=root;Database=mtcg");
 			_connection.Open();
@@ -21,11 +24,11 @@ namespace MTCG.Database {
 		}
 
 		// TODO allow length for fields
-		public void PrepareCommand(string statement, IDictionary<string, NpgsqlDbType> fields) {
+		public void PrepareCommand() {
 			_command = _connection.CreateCommand();
-			_command.CommandText = statement;
+			_command.CommandText = Statement;
 			NpgsqlCommand c = _command as NpgsqlCommand;
-			foreach(KeyValuePair<string, NpgsqlDbType> entry in fields) {
+			foreach(KeyValuePair<string, NpgsqlDbType> entry in Fields) {
 				if(entry.Value == NpgsqlDbType.Varchar) {
 					c.Parameters.Add(entry.Key, entry.Value, 50);
 				} else {
@@ -36,14 +39,14 @@ namespace MTCG.Database {
 		}
 
 		// TODO maybe also use amount of executing to use prepared?
-		public bool ExecuteCommandWithoutRead(IDictionary<string, string> data) {
+		public bool ExecuteCommandWithoutRead() {
 			try {
 				NpgsqlCommand c = _command as NpgsqlCommand;
-				foreach(KeyValuePair<string, string> entry in data) {
+				foreach(KeyValuePair<string, string> entry in Data) {
 					c.Parameters[entry.Key].Value = entry.Value;
 				}
 				_command.ExecuteNonQuery();
-			} catch(Exception e) {
+			} catch(System.Exception e) {
 				Console.WriteLine("exception in database");
 				Console.WriteLine(e.Message);
 				return false;
@@ -51,15 +54,27 @@ namespace MTCG.Database {
 			return true;
 		}
 		// TODO null values dont get inserted
-		public IDataReader ExecuteCommandWithRead(IDictionary<string, string> data) {
+		public IDataReader ExecuteCommandWithRead() {
 			try {
 				NpgsqlCommand c = _command as NpgsqlCommand;
-				foreach(KeyValuePair<string, string> entry in data) {
-					c.Parameters[entry.Key].Value = entry.Value;
+				foreach(KeyValuePair<string, string> entry in Data) {
+						switch (Fields[entry.Key]) {
+							case NpgsqlDbType.Varchar:
+								c.Parameters[entry.Key].Value = entry.Value;
+								break;
+							case NpgsqlDbType.Integer:
+								c.Parameters[entry.Key].Value = int.Parse(entry.Value);
+								break;
+							case NpgsqlDbType.Boolean:
+								c.Parameters[entry.Key].Value = bool.Parse(entry.Value);
+								break;
+							default:
+								throw new TypeAccessException("Unhandled DB type");
+					}
 				}
 				IDataReader reader = _command.ExecuteReader();
 				return reader;
-			} catch(Exception e) {
+			} catch(System.Exception e) {
 				Console.WriteLine("exception in database");
 				Console.WriteLine(e.Message);
 			}

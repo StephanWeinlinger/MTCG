@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace MTCG.Parse {
 	class JsonSerializer {
-		public static string Serialize(IEnumerable values) {
+		public static string Serialize<T>(T values) {
 			string content = JsonConvert.SerializeObject(values, Formatting.Indented);
 			return content;
 		}
