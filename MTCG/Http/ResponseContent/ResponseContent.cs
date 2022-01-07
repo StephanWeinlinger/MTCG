@@ -24,6 +24,7 @@ namespace MTCG.Http.ResponseContent {
 		}
 
 		public void SetContent(string content, bool isMessage) {
+			Console.WriteLine(content);
 			// sets simple messages
 			if(isMessage) {
 				Content = $"{{\"error\": {Error.ToString().ToLower()}, \"message\": \"{content}\"}}";

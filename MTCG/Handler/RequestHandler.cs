@@ -19,6 +19,7 @@ namespace MTCG.Handler {
 						responseContent = new UserController(request).ResponseContent;
 						break;
 					case "sessions":
+						responseContent = new SessionController(request).ResponseContent;
 						break;
 					case "packages":
 						break;

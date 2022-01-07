@@ -55,6 +55,17 @@ namespace MTCG.Database.Table {
 			return id;
 		}
 
+		public static int UpdateIsLoggedIn(Database db) {
+			db.Statement = "UPDATE \"user\" SET isloggedin = @isloggedin WHERE id = @id RETURNING id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "isloggedin", NpgsqlDbType.Boolean },
+				{ "id", NpgsqlDbType.Integer }
+			};
+			db.PrepareCommand();
+			int id = ReadId(db.ExecuteCommandWithRead());
+			return id;
+		}
+
 		private static int ReadId(IDataReader reader) {
 			int id;
 			if(reader != null && reader.Read()) {
