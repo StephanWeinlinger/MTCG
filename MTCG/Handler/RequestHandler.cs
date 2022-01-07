@@ -22,6 +22,7 @@ namespace MTCG.Handler {
 						responseContent = new SessionController(request).ResponseContent;
 						break;
 					case "packages":
+						responseContent = new PackageController(request).ResponseContent;
 						break;
 					case "transactions":
 						break;

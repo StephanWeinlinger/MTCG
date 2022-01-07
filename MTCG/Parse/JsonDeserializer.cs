@@ -28,7 +28,7 @@ namespace MTCG.Parse {
 					break;
 				case DeserializeType.CREATE_PACKAGE:
 					neededAmount = 5;
-					neededEntries.AddRange(new List<string> { "name", "damage" });
+					neededEntries.AddRange(new List<string> { "name", "type", "element", "damage" });
 					break;
 				case DeserializeType.REGISTER_USER:
 				case DeserializeType.LOGIN_USER:
@@ -54,23 +54,18 @@ namespace MTCG.Parse {
 		}
 
 		private static void CheckContents(IDictionary<string, string> values, IList<string> neededEntries) {
-			bool error = false;
+			if(values == null || values.Count != neededEntries.Count) {
+				throw new BadRequestException("Body contents don't match with requirements");
+			}
 			foreach(string entry in neededEntries) {
 				if(!values.ContainsKey(entry)) {
-					error = true;
-					break;
+					throw new BadRequestException("Body contents don't match with requirements");
 				}
-			}
-			if(values.Count != neededEntries.Count) {
-				error = true;
-			}
-			if(error) {
-				throw new BadRequestException("Body contents don't match with requirements");
 			}
 		}
 
 		private static void CheckAmount<T>(IList<T> values, int amount) {
-			if(values.Count != amount) {
+			if(values == null || values.Count != amount) {
 				throw new BadRequestException("Body contents don't match with requirements");
 			}
 		}
