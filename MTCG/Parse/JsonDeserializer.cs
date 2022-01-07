@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MTCG.Exception;
 using Newtonsoft.Json;
 
 // TODO check required fields if they actuallly contain something
@@ -64,13 +65,13 @@ namespace MTCG.Parse {
 				error = true;
 			}
 			if(error) {
-				throw new ArgumentException("Body contents don't match with requirements");
+				throw new BadRequestException("Body contents don't match with requirements");
 			}
 		}
 
 		private static void CheckAmount<T>(IList<T> values, int amount) {
 			if(values.Count != amount) {
-				throw new ArgumentException("Body contents don't match with requirements");
+				throw new BadRequestException("Body contents don't match with requirements");
 			}
 		}
 	}

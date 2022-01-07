@@ -42,9 +42,11 @@ namespace MTCG.Handler {
 				}
 			} catch(FailedAuthException e) {
 				responseContent = new ResponseUnauthorized(e.Message, true);
-			} 
-			catch(System.Exception e) {
+			} catch(BadRequestException e) {
 				responseContent = new ResponseBadRequest(e.Message, true);
+			} catch(System.Exception e) {
+				Console.WriteLine(e.Message);
+				responseContent = new ResponseBadRequest("Unknown error", true);
 			}
 			finally {
 				HttpResponse response = new HttpResponse(client);

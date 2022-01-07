@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using MTCG.Exception;
 
 namespace MTCG.Http {
 	class HttpRequest {
@@ -68,7 +69,7 @@ namespace MTCG.Http {
 					if(Enum.TryParse(parts[0], out HttpMethod tmpMethod)) {
 						Method = tmpMethod;
 					} else {
-						throw new ArgumentException("Method not supported");
+						throw new BadRequestException("Method not supported");
 					}
 					FullPath = WebUtility.UrlDecode(parts[1]);
 				}

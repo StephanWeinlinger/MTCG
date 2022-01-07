@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MTCG.Database.Storage;
 using MTCG.Database.Table;
+using MTCG.Exception;
 using MTCG.Http;
 using MTCG.Http.ResponseContent;
 using MTCG.Parse;
@@ -42,7 +43,7 @@ namespace MTCG.Controller {
 				user = UserTable.GetUserByUsername(Database);
 			}
 			if(user == null) {
-				throw new ArgumentException("User could not be found");
+				throw new BadRequestException("User could not be found");
 			}
 			ResponseContent = new ResponseOk();
 			ResponseContent.SetContent(JsonSerializer.Serialize(user), false);
@@ -54,7 +55,7 @@ namespace MTCG.Controller {
 			Database.Data.Add("token", Database.Data["username"] + "-MTCGToken");
 			int id = UserTable.InsertUser(Database);
 			if(id == -1) {
-				throw new ArgumentException("User could not be inserted");
+				throw new BadRequestException("User could not be inserted");
 			}
 			ResponseContent = new ResponseOk("User was inserted", true);
 		}
@@ -67,7 +68,7 @@ namespace MTCG.Controller {
 				id = UserTable.UpdateUser(Database);
 			}
 			if(id == -1) {
-				throw new ArgumentException("User could not be updated");
+				throw new BadRequestException("User could not be updated");
 			}
 			ResponseContent = new ResponseOk("User was updated", true);
 		}
