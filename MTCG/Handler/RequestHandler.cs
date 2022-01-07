@@ -16,9 +16,7 @@ namespace MTCG.Handler {
 				// switch over different routes and call right controller method
 				switch(request.PathContents[0]) {
 					case "users":
-						var controller = new UserController(request);
-						controller.Handle();
-						responseContent = controller.ResponseContent;
+						responseContent = new UserController(request).ResponseContent;
 						break;
 					case "sessions":
 						break;

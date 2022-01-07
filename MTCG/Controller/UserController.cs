@@ -11,8 +11,10 @@ using MTCG.Http.ResponseContent;
 using MTCG.Parse;
 
 namespace MTCG.Controller {
-	class UserController : Controller {
-		public UserController(HttpRequest request) : base(request) { }
+	sealed class UserController : Controller {
+		public UserController(HttpRequest request) : base(request) {
+			Handle();
+		}
 
 		public override void Handle() {
 			switch(Request.Method) {
