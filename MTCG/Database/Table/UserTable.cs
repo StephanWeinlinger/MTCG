@@ -20,6 +20,16 @@ namespace MTCG.Database.Table {
 			return user;
 		}
 
+		public static UserStorage GetUserByUsername(Database db, IDictionary<string, string> data) {
+			string statement = "SELECT * FROM \"user\" WHERE username = @username";
+			var fields = new Dictionary<string, NpgsqlDbType> {
+				{ "username", NpgsqlDbType.Varchar },
+			};
+			db.PrepareCommand(statement, fields);
+			UserStorage user = ReadUser(db.ExecuteCommandWithRead(data));
+			return user;
+		}
+
 		public static int InsertUser(Database db, IDictionary<string, string> data) {
 			string statement = "INSERT INTO \"user\" (username, password, token) VALUES (@username, @password, @token) RETURNING id";
 			var fields = new Dictionary<string, NpgsqlDbType> {

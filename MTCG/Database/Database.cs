@@ -50,7 +50,7 @@ namespace MTCG.Database {
 			}
 			return true;
 		}
-
+		// TODO null values dont get inserted
 		public IDataReader ExecuteCommandWithRead(IDictionary<string, string> data) {
 			try {
 				NpgsqlCommand c = _command as NpgsqlCommand;

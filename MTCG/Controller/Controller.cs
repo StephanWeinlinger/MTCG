@@ -15,10 +15,13 @@ namespace MTCG.Controller {
 		protected Database.Database Database;
 		public HttpRequest Request;
 		public ResponseContent ResponseContent;
+		protected UserStorage CurrentUser;
+		protected string CurrentUserId;
 
 		protected Controller(HttpRequest request) {
 			Request = request;
 			Database = new Database.Database();
+			CurrentUserId = null;
 		}
 
 		protected void CheckAuth() {
@@ -28,10 +31,11 @@ namespace MTCG.Controller {
 			var data = new Dictionary<string, string> {
 				{ "token", Request.Authorization }
 			};
-			UserStorage user = UserTable.GetUserByToken(Database, data);
-			if(user == null || !user.IsLoggedIn) {
+			CurrentUser = UserTable.GetUserByToken(Database, data);
+			if(CurrentUser == null || !CurrentUser.IsLoggedIn) {
 				throw new ArgumentException("User authorization failed");
 			}
+			CurrentUserId = CurrentUser.Id.ToString();
 		}
 
 		public abstract void Handle();
