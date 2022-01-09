@@ -7,23 +7,23 @@ using MTCG.Battle.Card;
 
 namespace MTCG.Battle.Log {
 	class LogEntry {
-		private int _actWinnerDamage;
-		private int _actLoserDamage;
-		private int _baseWinnerDamage;
-		private int _baseLoserDamage;
-		private string _winnerCard;
-		private string _loserCard;
-		private string _message;
+		public int ActWinnerDamage;
+		public int ActLoserDamage;
+		public int BaseWinnerDamage;
+		public int BaseLoserDamage;
+		public string WinnerCard;
+		public string LoserCard;
+		public string Message;
 
 		public LogEntry(ICard winner, ICard loser, int winnerDamage, int loserDamage, bool isDraw) {
-			_actWinnerDamage = winnerDamage;
-			_actLoserDamage = loserDamage;
-			_baseWinnerDamage = winner.Damage;
-			_baseLoserDamage = loser.Damage;
-			_winnerCard = $"{winner.Name.ToString()} {winner.Type.ToString()} {winner.Element.ToString()}"; // Name, Type, Element
-			_loserCard = $"{loser.Name.ToString()} {loser.Type.ToString()} {loser.Element.ToString()}"; // Name, Type, Element
-			_message = isDraw ? $"{winner.Name.ToString()} tied against {loser.Name.ToString()}" : $"{winner.Name.ToString()} won against {loser.Name.ToString()}";
-			Console.WriteLine(_message);
+			ActWinnerDamage = winnerDamage;
+			ActLoserDamage = loserDamage;
+			BaseWinnerDamage = winner.Damage;
+			BaseLoserDamage = loser.Damage;
+			WinnerCard = $"{winner.Type.ToString()} | {winner.Name.ToString()} | {winner.Element.ToString()}"; // Name, Type, Element
+			LoserCard = $"{loser.Type.ToString()} | {loser.Name.ToString()} | {loser.Element.ToString()}"; // Name, Type, Element
+			Message = isDraw ? $"{winner.Name.ToString()} tied against {loser.Name.ToString()}" : $"{winner.Name.ToString()} won against {loser.Name.ToString()}";
+			Console.WriteLine(Message);
 		}
 	}
 }

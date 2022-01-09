@@ -7,12 +7,16 @@ using MTCG.Battle.Card;
 
 namespace MTCG.Battle.Log {
 	class Log {
+		public int Id1;
+		public int Id2;
 		public int WinnerId;
 		public int LoserId;
 		public bool IsDraw;
 		public IList<LogEntry> Rounds;
 
-		public Log() {
+		public Log(int id1, int id2) {
+			Id1 = id1;
+			Id2 = id2;
 			WinnerId = -1;
 			LoserId = -1;
 			IsDraw = false;

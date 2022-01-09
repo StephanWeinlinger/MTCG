@@ -45,12 +45,12 @@ namespace MTCG.Database.Table {
 		}
 
 		private static int ReadId(IDataReader reader) {
-			int id;
-			if(reader != null && reader.Read()) {
-				id = reader.GetInt32(0);
+			int id = -1;
+			if(reader != null) {
+				if(reader.Read()) {
+					id = reader.GetInt32(0);
+				}
 				reader.Close();
-			} else {
-				id = -1;
 			}
 			return id;
 		}
@@ -66,7 +66,6 @@ namespace MTCG.Database.Table {
 						reader.GetInt32(3),
 						reader.GetInt32(4)
 					);
-
 				}
 				reader.Close();
 			}

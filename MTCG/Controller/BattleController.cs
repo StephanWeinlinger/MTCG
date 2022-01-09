@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MTCG.Battle.Log;
 using MTCG.Database.Storage;
 using MTCG.Database.Table;
 using MTCG.Exception;
@@ -75,42 +76,63 @@ namespace MTCG.Controller {
 				};
 				var deck2 = CardTable.GetAllCardsInDeck(Database);
 
-				// use new class here
-				// return log class, with winner and loser id
+				Battle.Battle battle = new Battle.Battle(deck1, deck2);
 
-				//Database.Data = new Dictionary<string, string> {
-				//	{ "userid", "1" }
-				//};
-				//ScoreboardStorage winner = ScoreboardTable.GetScoreboard(Database);
-				//Database.Data = new Dictionary<string, string> {
-				//	{ "userid", "2" }
-				//};
-				//ScoreboardStorage loser = ScoreboardTable.GetScoreboard(Database);
-				//Database.Data = new Dictionary<string, string> {
-				//	{ "userid", winner.UserId.ToString() },
-				//	{ "elo", (winner.Elo + 3).ToString() },
-				//	{ "wins", (winner.Wins + 1).ToString() },
-				//	{ "losses", winner.Losses.ToString() },
-				//	{ "draws", winner.Draws.ToString() },
-				//};
-				//ScoreboardTable.UpdateScoreboard(Database);
-				//Database.Data = new Dictionary<string, string> {
-				//	{ "userid", winner.UserId.ToString() },
-				//	{ "elo", (winner.Elo - 5).ToString() },
-				//	{ "wins", winner.Wins.ToString() },
-				//	{ "losses", (winner.Losses + 1).ToString() },
-				//	{ "draws", winner.Draws.ToString() },
-				//};
-				//ScoreboardTable.UpdateScoreboard(Database);
+				Log battlelog = battle.Log;
 
 				// change elo and stats
+				Database.Data = new Dictionary<string, string> {
+					{ "userid", battlelog.Id1.ToString() }
+				};
+				ScoreboardStorage user1 = ScoreboardTable.GetScoreboard(Database);
+				Database.Data = new Dictionary<string, string> {
+					{ "userid", battlelog.Id2.ToString() }
+				};
+				ScoreboardStorage user2 = ScoreboardTable.GetScoreboard(Database);
+				if(battlelog.IsDraw) {
+					Database.Data = new Dictionary<string, string> {
+						{ "userid", user1.UserId.ToString() },
+						{ "elo", user1.Elo.ToString() },
+						{ "wins", user1.Wins.ToString() },
+						{ "losses", user1.Losses.ToString() },
+						{ "draws", (user1.Draws + 1).ToString() },
+					};
+					ScoreboardTable.UpdateScoreboard(Database);
+					Database.Data = new Dictionary<string, string> {
+						{ "userid", user2.UserId.ToString() },
+						{ "elo", user2.Elo.ToString() },
+						{ "wins", user2.Wins.ToString() },
+						{ "losses", user2.Losses.ToString() },
+						{ "draws", (user2.Draws + 1).ToString() },
+					};
+					ScoreboardTable.UpdateScoreboard(Database);
+				} else {
+					var winner = user1.UserId == battlelog.WinnerId ? user1 : user2;
+					var loser = user1.UserId == battlelog.LoserId ? user1 : user2;
+					Database.Data = new Dictionary<string, string> {
+						{ "userid", winner.UserId.ToString() },
+						{ "elo", (winner.Elo + 3).ToString() },
+						{ "wins", (winner.Wins + 1).ToString() },
+						{ "losses", winner.Losses.ToString() },
+						{ "draws", winner.Draws.ToString() },
+					};
+					ScoreboardTable.UpdateScoreboard(Database);
+					Database.Data = new Dictionary<string, string> {
+						{ "userid", loser.UserId.ToString() },
+						{ "elo", (loser.Elo - 5).ToString() },
+						{ "wins", loser.Wins.ToString() },
+						{ "losses", (loser.Losses + 1).ToString() },
+						{ "draws", loser.Draws.ToString() },
+					};
+					ScoreboardTable.UpdateScoreboard(Database);
+				}
+				
 				// delete battle in db
 				Database.Data = new Dictionary<string, string> {
 					{ "id", currentBattle.Id.ToString() }
 				};
 				BattleTable.DeleteBattle(Database);
-				// maybe return winner?
-				ResponseContent = new ResponseOk("Matched succesfully", true);
+				ResponseContent = new ResponseOk(JsonSerializer.Serialize(battlelog), false);
 			} else {
 				ResponseContent = new ResponseOk("Started matchmaking", true);
 			}
