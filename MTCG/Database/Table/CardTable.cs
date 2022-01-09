@@ -23,6 +23,17 @@ namespace MTCG.Database.Table {
 			return id;
 		}
 
+		public static int UpdateCard(Database db) {
+			db.Statement = "UPDATE \"card\" SET owner = @owner WHERE id = @id RETURNING id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "owner", NpgsqlDbType.Integer },
+				{ "id", NpgsqlDbType.Integer }
+			};
+			db.PrepareCommand();
+			int id = ReadId(db.ExecuteCommandWithRead());
+			return id;
+		}
+
 		private static int ReadId(IDataReader reader) {
 			int id;
 			if(reader != null && reader.Read()) {

@@ -66,6 +66,26 @@ namespace MTCG.Database.Table {
 			return id;
 		}
 
+		public static int UpdateCoinsOnBuy(Database db) {
+			db.Statement = "UPDATE \"user\" SET coins = ( SELECT coins FROM \"user\" WHERE id = @id ) - 5 WHERE id = ( SELECT id FROM \"user\" WHERE id = @id AND coins > 4) RETURNING id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "id", NpgsqlDbType.Integer }
+			};
+			db.PrepareCommand();
+			int id = ReadId(db.ExecuteCommandWithRead());
+			return id;
+		}
+
+		public static int UpdateCoinsOnRefund(Database db) {
+			db.Statement = "UPDATE \"user\" SET coins = ( SELECT coins FROM \"user\" WHERE id = @id ) + 5 WHERE id = @id RETURNING id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "id", NpgsqlDbType.Integer }
+			};
+			db.PrepareCommand();
+			int id = ReadId(db.ExecuteCommandWithRead());
+			return id;
+		}
+
 		private static int ReadId(IDataReader reader) {
 			int id;
 			if(reader != null && reader.Read()) {
@@ -78,22 +98,23 @@ namespace MTCG.Database.Table {
 		}
 
 		private static UserStorage ReadUser(IDataReader reader) {
-			UserStorage user;
-			if(reader != null && reader.Read()) {
-				user = new UserStorage(
-					reader.GetInt32(0),
-					reader.GetString(1),
-					reader.GetString(2),
-					reader.GetString(3),
-					reader.GetBoolean(4),
-					reader.GetInt32(5),
-					reader.GetString(6),
-					reader.GetString(7),
-					reader.GetString(8)
-				);
+			UserStorage user = null;
+			if(reader != null) {
+				if(reader.Read()) {
+					user = new UserStorage(
+						reader.GetInt32(0),
+						reader.GetString(1),
+						reader.GetString(2),
+						reader.GetString(3),
+						reader.GetBoolean(4),
+						reader.GetInt32(5),
+						reader.GetString(6),
+						reader.GetString(7),
+						reader.GetString(8)
+					);
+
+				}
 				reader.Close();
-			} else {
-				user = null;
 			}
 			return user;
 		}

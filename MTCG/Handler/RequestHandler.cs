@@ -25,6 +25,7 @@ namespace MTCG.Handler {
 						responseContent = new PackageController(request).ResponseContent;
 						break;
 					case "transactions":
+						responseContent = new TransactionController(request).ResponseContent;
 						break;
 					case "cards":
 						break;
