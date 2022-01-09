@@ -39,6 +39,16 @@ namespace MTCG.Database.Table {
 			return id;
 		}
 
+		public static bool DeleteBattle(Database db) {
+			db.Statement = "DELETE FROM \"battle\" WHERE id = @id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "id", NpgsqlDbType.Integer}
+			};
+			db.PrepareCommand();
+			bool error = db.ExecuteCommandWithoutRead();
+			return error;
+		}
+
 		private static int ReadId(IDataReader reader) {
 			int id;
 			if(reader != null && reader.Read()) {

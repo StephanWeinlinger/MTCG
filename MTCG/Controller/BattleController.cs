@@ -32,6 +32,7 @@ namespace MTCG.Controller {
 		// TODO deck cannot be changed if user is currently in a battle
 		private void StartBattle() {
 			bool start = false;
+			BattleStorage currentBattle = null;
 			if(!CurrentUser.IsDeckSet) {
 				throw new BadRequestException("Deck is not set");
 			}
@@ -59,13 +60,57 @@ namespace MTCG.Controller {
 					};
 					int id = BattleTable.UpdateBattle(Database);
 					start = true;
+					currentBattle = new BattleStorage(possibleBattles[0].Id, possibleBattles[0].User1, CurrentUser.Id);
 				}
 			}
 			if(start) {
 				// battle logic
 				// fetch current decks
+				Database.Data = new Dictionary<string, string> {
+					{ "owner", currentBattle.User1.ToString() }
+				};
+				var deck1 = CardTable.GetAllCardsInDeck(Database);
+				Database.Data = new Dictionary<string, string> {
+					{ "owner", currentBattle.User2.ToString() }
+				};
+				var deck2 = CardTable.GetAllCardsInDeck(Database);
 
+				// use new class here
+				// return log class, with winner and loser id
+
+				//Database.Data = new Dictionary<string, string> {
+				//	{ "userid", "1" }
+				//};
+				//ScoreboardStorage winner = ScoreboardTable.GetScoreboard(Database);
+				//Database.Data = new Dictionary<string, string> {
+				//	{ "userid", "2" }
+				//};
+				//ScoreboardStorage loser = ScoreboardTable.GetScoreboard(Database);
+				//Database.Data = new Dictionary<string, string> {
+				//	{ "userid", winner.UserId.ToString() },
+				//	{ "elo", (winner.Elo + 3).ToString() },
+				//	{ "wins", (winner.Wins + 1).ToString() },
+				//	{ "losses", winner.Losses.ToString() },
+				//	{ "draws", winner.Draws.ToString() },
+				//};
+				//ScoreboardTable.UpdateScoreboard(Database);
+				//Database.Data = new Dictionary<string, string> {
+				//	{ "userid", winner.UserId.ToString() },
+				//	{ "elo", (winner.Elo - 5).ToString() },
+				//	{ "wins", winner.Wins.ToString() },
+				//	{ "losses", (winner.Losses + 1).ToString() },
+				//	{ "draws", winner.Draws.ToString() },
+				//};
+				//ScoreboardTable.UpdateScoreboard(Database);
+
+				// change elo and stats
 				// delete battle in db
+				Database.Data = new Dictionary<string, string> {
+					{ "id", currentBattle.Id.ToString() }
+				};
+				BattleTable.DeleteBattle(Database);
+				// maybe return winner?
+				ResponseContent = new ResponseOk("Matched succesfully", true);
 			} else {
 				ResponseContent = new ResponseOk("Started matchmaking", true);
 			}
