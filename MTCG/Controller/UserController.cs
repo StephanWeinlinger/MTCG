@@ -59,6 +59,10 @@ namespace MTCG.Controller {
 			if(id == -1) {
 				throw new BadRequestException("User could not be inserted");
 			}
+			Database.Data = new Dictionary<string, string> {
+				{ "userid", id.ToString() }
+			};
+			ScoreboardTable.InsertScoreboard(Database);
 			ResponseContent = new ResponseOk("User was inserted", true);
 		}
 
