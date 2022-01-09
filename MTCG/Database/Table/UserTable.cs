@@ -101,6 +101,9 @@ namespace MTCG.Database.Table {
 			UserStorage user = null;
 			if(reader != null) {
 				if(reader.Read()) {
+					string displayname = !reader.IsDBNull(6) ? reader.GetString(6) : null;
+					string bio = !reader.IsDBNull(7) ? reader.GetString(7) : null;
+					string status = !reader.IsDBNull(8) ? reader.GetString(8) : null;
 					user = new UserStorage(
 						reader.GetInt32(0),
 						reader.GetString(1),
@@ -108,9 +111,10 @@ namespace MTCG.Database.Table {
 						reader.GetString(3),
 						reader.GetBoolean(4),
 						reader.GetInt32(5),
-						reader.GetString(6),
-						reader.GetString(7),
-						reader.GetString(8)
+						displayname,
+						bio,
+						status,
+						reader.GetBoolean(9)
 					);
 
 				}

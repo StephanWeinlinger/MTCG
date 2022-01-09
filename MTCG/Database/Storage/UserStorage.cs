@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
 	class UserStorage : IStorage {
-		public UserStorage(int id, string username, string password, string token, bool isLoggedIn, int coins, string displayname, string bio, string status) {
+		public UserStorage(int id, string username, string password, string token, bool isLoggedIn, int coins, string displayname, string bio, string status, bool isDeckSet) {
 			Id = id;
 			Username = username;
 			Password = password;
@@ -16,6 +16,7 @@ namespace MTCG.Database.Storage {
 			Displayname = displayname;
 			Bio = bio;
 			Status = status;
+			IsDeckSet = isDeckSet;
 		}
 		public int Id;
 		public string Username;
@@ -26,5 +27,6 @@ namespace MTCG.Database.Storage {
 		public string Displayname;
 		public string Bio;
 		public string Status;
+		public bool IsDeckSet;
 	}
 }

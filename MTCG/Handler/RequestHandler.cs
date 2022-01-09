@@ -37,6 +37,9 @@ namespace MTCG.Handler {
 						break;
 					case "tradings":
 						break;
+					case "battles":
+						responseContent = new BattleController(request).ResponseContent;
+						break;
 					default:
 						responseContent = new ResponseNotFound();
 						break;
