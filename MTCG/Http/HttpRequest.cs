@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using MTCG.Exception;
 
 namespace MTCG.Http {
@@ -18,7 +17,6 @@ namespace MTCG.Http {
 		public string Authorization { get; private set; }
 		public IDictionary<string, string> Headers { get; }
 		public IList<string> PathContents { get; set; }
-		public IDictionary<string, string> QueryParameters { get; set; }
 
 		private StreamReader _reader;
 
@@ -26,7 +24,6 @@ namespace MTCG.Http {
 			_reader = new(client.GetStream());
 			Headers = new Dictionary<string, string>();
 			PathContents = new List<string>();
-			QueryParameters = new Dictionary<string, string>();
 			Method = HttpMethod.Undefined;
 			Authorization = "";
 			Parse();
@@ -50,9 +47,6 @@ namespace MTCG.Http {
 			}
 			foreach(string entry in PathContents) {
 				Console.WriteLine($"{entry}");
-			}
-			foreach(KeyValuePair<string, string> entry in QueryParameters) {
-				Console.WriteLine($"{entry.Key}: {entry.Value}");
 			}
 			Console.WriteLine(Content);
 		}
@@ -101,12 +95,6 @@ namespace MTCG.Http {
 			// get path contents
 			string[] parts = FullPath.Split("?");
 			PathContents = parts[0].Substring(1).Split("/").ToList();
-			// get query parameters if they are set
-			if(parts.Length == 2) {
-				NameValueCollection tmpParameters = HttpUtility.ParseQueryString(parts[1]);
-				// convert to dictionary
-				QueryParameters = tmpParameters.AllKeys.ToDictionary(t => t, t => tmpParameters[t]);
-			}
 		}
 	}
 }
