@@ -35,7 +35,8 @@ namespace MTCG.Database.Table {
 		}
 
 		public static List<CardStorage> GetAllCardsInDeck(Database db) {
-			db.Statement = "SELECT c.id, c.owner, c.damage, t.text, e.text, c.indeck, n.text FROM (((\"card\" c JOIN \"type\" t on c.type = t.id) JOIN \"element\" e on c.element = e.id) JOIN \"name\" n on c.name = n.id) WHERE c.owner = @owner AND c.indeck = true";
+			//db.Statement = "SELECT c.id, c.owner, c.damage, t.text, e.text, c.indeck, n.text FROM (((\"card\" c JOIN \"type\" t on c.type = t.id) JOIN \"element\" e on c.element = e.id) JOIN \"name\" n on c.name = n.id) WHERE c.owner = @owner AND c.indeck = true";
+			db.Statement = "SELECT * FROM \"card\" WHERE owner = @owner AND indeck = true";
 			db.Fields = new Dictionary<string, NpgsqlDbType> {
 				{ "owner", NpgsqlDbType.Integer },
 			};
@@ -64,10 +65,10 @@ namespace MTCG.Database.Table {
 						reader.GetInt32(0),
 						owner,
 						reader.GetInt32(2),
-						reader.GetString(3),
-						reader.GetString(4),
+						reader.GetInt32(3),
+						reader.GetInt32(4),
 						reader.GetBoolean(5),
-						reader.GetString(6)
+						reader.GetInt32(6)
 					));
 				}
 				reader.Close();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
 	class CardStorage : IStorage {
-		public CardStorage(int id, int? owner, int damage, string type, string element, bool inDeck, string name) {
+		public CardStorage(int id, int? owner, int damage, int type, int element, bool inDeck, int name) {
 			Id = id;
 			Owner = owner;
 			Damage = damage;
@@ -18,9 +18,9 @@ namespace MTCG.Database.Storage {
 		public int Id;
 		public int? Owner;
 		public int Damage;
-		public string Type;
-		public string Element;
+		public int Type;
+		public int Element;
 		public bool InDeck;
-		public string Name;
+		public int Name;
 	}
 }
