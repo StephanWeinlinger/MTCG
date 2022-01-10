@@ -34,8 +34,10 @@ namespace MTCG.Handler {
 						responseContent = new Deckcontroller(request).ResponseContent;
 						break;
 					case "stats":
+						responseContent = new StatController(request).ResponseContent;
 						break;
-					case "score":
+					case "leaderboard":
+						responseContent = new LeaderboardController(request).ResponseContent;
 						break;
 					case "tradings":
 						break;

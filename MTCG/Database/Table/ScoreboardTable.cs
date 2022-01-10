@@ -20,6 +20,14 @@ namespace MTCG.Database.Table {
 			return scoreboard;
 		}
 
+		public static List<ScoreboardStorage> GetAllScoreboardsOrdered(Database db) {
+			db.Statement = "SELECT * FROM \"scoreboard\" ORDER BY elo DESC";
+			db.Fields = new Dictionary<string, NpgsqlDbType>();
+			db.PrepareCommand();
+			List<ScoreboardStorage> scoreboard = ReadScoreboards(db.ExecuteCommandWithRead());
+			return scoreboard;
+		}
+
 		public static int InsertScoreboard(Database db) {
 			db.Statement = "INSERT INTO \"scoreboard\" (userid) VALUES (@userid) RETURNING userid";
 			db.Fields = new Dictionary<string, NpgsqlDbType> {
@@ -66,6 +74,23 @@ namespace MTCG.Database.Table {
 						reader.GetInt32(3),
 						reader.GetInt32(4)
 					);
+				}
+				reader.Close();
+			}
+			return scoreboard;
+		}
+
+		private static List<ScoreboardStorage> ReadScoreboards(IDataReader reader) {
+			List<ScoreboardStorage> scoreboard = new List<ScoreboardStorage>();
+			if(reader != null) {
+				while(reader.Read()) {
+					scoreboard.Add(new ScoreboardStorage(
+						reader.GetInt32(0),
+						reader.GetInt32(1),
+						reader.GetInt32(2),
+						reader.GetInt32(3),
+						reader.GetInt32(4)
+					));
 				}
 				reader.Close();
 			}
