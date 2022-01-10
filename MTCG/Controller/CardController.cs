@@ -33,7 +33,7 @@ namespace MTCG.Controller {
 			Database.Data = new Dictionary<string, string> {
 				{ "owner", CurrentUserId }
 			};
-			var cards = CardTable.GetAllCardsFromUser(Database);
+			var cards = CardTable.GetAllCardsFromUserJoined(Database);
 			if(cards == null || cards.Count == 0) {
 				throw new BadRequestException("User doesn't own any cards");
 			}

@@ -31,6 +31,7 @@ namespace MTCG.Handler {
 						responseContent = new CardController(request).ResponseContent;
 						break;
 					case "deck":
+						responseContent = new Deckcontroller(request).ResponseContent;
 						break;
 					case "stats":
 						break;

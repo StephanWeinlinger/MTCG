@@ -44,7 +44,7 @@ namespace MTCG.Database.Table {
 			return cards;
 		}
 
-		public static List<JoinedCardStorage> GetAllCardsFromUser(Database db) {
+		public static List<JoinedCardStorage> GetAllCardsFromUserJoined(Database db) {
 			db.Statement = "SELECT c.id, c.owner, c.damage, t.text, e.text, c.indeck, n.text FROM (((\"card\" c JOIN \"type\" t on c.type = t.id) JOIN \"element\" e on c.element = e.id) JOIN \"name\" n on c.name = n.id) WHERE c.owner = @owner";
 			db.Fields = new Dictionary<string, NpgsqlDbType> {
 				{ "owner", NpgsqlDbType.Integer },
@@ -52,6 +52,36 @@ namespace MTCG.Database.Table {
 			db.PrepareCommand();
 			var cards = ReadJoinedCards(db.ExecuteCommandWithRead());
 			return cards;
+		}
+
+		public static List<JoinedCardStorage> GetAllCardsInDeckJoined(Database db) {
+			db.Statement = "SELECT c.id, c.owner, c.damage, t.text, e.text, c.indeck, n.text FROM (((\"card\" c JOIN \"type\" t on c.type = t.id) JOIN \"element\" e on c.element = e.id) JOIN \"name\" n on c.name = n.id) WHERE c.owner = @owner AND c.indeck = true";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "owner", NpgsqlDbType.Integer },
+			};
+			db.PrepareCommand();
+			var cards = ReadJoinedCards(db.ExecuteCommandWithRead());
+			return cards;
+		}
+
+		public static bool UpdateAllCardsOldDeck(Database db) {
+			db.Statement = "UPDATE \"card\" SET indeck = false WHERE owner = @owner AND indeck = true";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "owner", NpgsqlDbType.Integer },
+			};
+			db.PrepareCommand();
+			bool error = db.ExecuteCommandWithoutRead();
+			return error;
+		}
+
+		public static bool UpdateCardNewDeck(Database db) {
+			db.Statement = "UPDATE \"card\" SET indeck = true WHERE id = @id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "id", NpgsqlDbType.Integer },
+			};
+			db.PrepareCommand();
+			bool error = db.ExecuteCommandWithoutRead();
+			return error;
 		}
 
 		private static int ReadId(IDataReader reader) {
