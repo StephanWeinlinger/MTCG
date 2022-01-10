@@ -33,8 +33,6 @@ namespace MTCG.Controller {
 			}
 		}
 
-		// TODO dont forget to look at battle table when trying to trade cards or change the deck
-		// TODO deck cannot be changed if user is currently in a battle
 		private void StartBattle() {
 			bool start = false;
 			BattleStorage currentBattle = null;

@@ -12,7 +12,6 @@ namespace MTCG.Handler {
 			try {
 				// read request data, return body, url, method
 				HttpRequest request = new HttpRequest(client);
-				//request.Log();
 				// switch over different routes and call right controller method
 				switch(request.PathContents[0]) {
 					case "users":
@@ -39,7 +38,8 @@ namespace MTCG.Handler {
 					case "leaderboard":
 						responseContent = new LeaderboardController(request).ResponseContent;
 						break;
-					case "tradings":
+					case "trades":
+						responseContent = new TradeController(request).ResponseContent;
 						break;
 					case "battles":
 						responseContent = new BattleController(request).ResponseContent;

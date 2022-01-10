@@ -18,10 +18,10 @@ namespace MTCG.Parse {
 					neededEntries.AddRange(new List<string> { "displayname", "bio", "status" });
 					break;
 				case DeserializeType.CREATE_TRADE:
-					neededEntries.AddRange(new List<string> { "cardID", "wantedType", "wantedElement", "minDamage" });
+					neededEntries.AddRange(new List<string> { "cardid", "wantedtype", "wantedelement", "mindamage" });
 					break;
 				case DeserializeType.DO_TRADE:
-					neededEntries.AddRange(new List<string> { "id", "cardID" });
+					neededEntries.AddRange(new List<string> { "id" });
 					break;
 				case DeserializeType.CONFIGURE_DECK:
 					neededAmount = 4;

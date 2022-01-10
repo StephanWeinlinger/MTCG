@@ -8,5 +8,7 @@ namespace MTCG.Lock {
 	static class Lock {
 		public static Object PackageLocker = new Object();
 		public static Object BattleLocker = new Object();
+		public static Object TradeInsertLocker = new Object();
+		public static Object TradeDoLocker = new Object();
 	}
 }

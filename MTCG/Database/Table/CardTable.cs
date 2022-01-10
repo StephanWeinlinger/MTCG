@@ -34,6 +34,16 @@ namespace MTCG.Database.Table {
 			return id;
 		}
 
+		public static CardStorage GetCard(Database db) {
+			db.Statement = "SELECT * FROM \"card\" WHERE id = @id";
+			db.Fields = new Dictionary<string, NpgsqlDbType> {
+				{ "id", NpgsqlDbType.Integer },
+			};
+			db.PrepareCommand();
+			var card = ReadCard(db.ExecuteCommandWithRead());
+			return card;
+		}
+
 		public static List<CardStorage> GetAllCardsInDeck(Database db) {
 			db.Statement = "SELECT * FROM \"card\" WHERE owner = @owner AND indeck = true";
 			db.Fields = new Dictionary<string, NpgsqlDbType> {
@@ -93,6 +103,26 @@ namespace MTCG.Database.Table {
 				reader.Close();
 			}
 			return id;
+		}
+
+		private static CardStorage ReadCard(IDataReader reader) {
+			CardStorage card = null;
+			if(reader != null) {
+				if(reader.Read()) {
+					int? owner = !reader.IsDBNull(1) ? reader.GetInt32(1) : null;
+					card = new CardStorage(
+						reader.GetInt32(0),
+						owner,
+						reader.GetInt32(2),
+						reader.GetInt32(3),
+						reader.GetInt32(4),
+						reader.GetBoolean(5),
+						reader.GetInt32(6)
+					);
+				}
+				reader.Close();
+			}
+			return card;
 		}
 
 		private static List<CardStorage> ReadCards(IDataReader reader) {

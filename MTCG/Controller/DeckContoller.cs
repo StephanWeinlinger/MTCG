@@ -49,47 +49,49 @@ namespace MTCG.Controller {
 
 		private void UpdateDeck() {
 			// check if the cards are even owned by the user (done first because it can be done without locking the battle)
-			var data = JsonDeserializer.Deserialize<List<string>>(Request.Content, DeserializeType.CONFIGURE_DECK);
-			Database.Data = new Dictionary<string, string> {
-				{ "owner", CurrentUserId }
-			};
-			var cards = CardTable.GetAllCardsFromUserJoined(Database);
-			foreach(var entry in data) {
-				if(!cards.Exists(card => card.Id == int.Parse(entry))) {
-					throw new BadRequestException("Used card is not owned by user");
-				}
-			}
-			lock(Lock.Lock.BattleLocker) {
-				// get all battles
-				Database.Data = new Dictionary<string, string>();
-				var battles = BattleTable.GetAllBattles(Database);
-				foreach(var battle in battles) {
-					if(battle.User1 == CurrentUser.Id || battle.User2 == CurrentUser.Id) {
-						throw new BadRequestException("User currently in queue or battle");
+			lock(Lock.Lock.TradeInsertLocker) {
+				var data = JsonDeserializer.Deserialize<List<string>>(Request.Content, DeserializeType.CONFIGURE_DECK);
+				Database.Data = new Dictionary<string, string> {
+					{ "owner", CurrentUserId }
+				};
+				var cards = CardTable.GetAllCardsFromUserJoined(Database);
+				foreach(var entry in data) {
+					if(!cards.Exists(card => card.Id == int.Parse(entry))) {
+						throw new BadRequestException("Used card is not owned by user");
 					}
 				}
+				lock(Lock.Lock.BattleLocker) {
+					// get all battles
+					Database.Data = new Dictionary<string, string>();
+					var battles = BattleTable.GetAllBattles(Database);
+					foreach(var battle in battles) {
+						if(battle.User1 == CurrentUser.Id || battle.User2 == CurrentUser.Id) {
+							throw new BadRequestException("User currently in queue or battle");
+						}
+					}
 
-				if(CurrentUser.IsDeckSet) {
-					// update old cards
+					if(CurrentUser.IsDeckSet) {
+						// update old cards
+						Database.Data = new Dictionary<string, string> {
+							{ "owner", CurrentUserId }
+						};
+					}
+					CardTable.UpdateAllCardsOldDeck(Database);
+					// update new cards
 					Database.Data = new Dictionary<string, string> {
-						{ "owner", CurrentUserId }
+						{ "id", "" },
 					};
+					foreach(var entry in data) {
+						Database.Data["id"] = entry;
+						CardTable.UpdateCardNewDeck(Database);
+					}
+					// update isdeckset
+					Database.Data = new Dictionary<string, string> {
+						{ "isdeckset", "true"},
+						{ "id", CurrentUserId }
+					};
+					UserTable.UpdateIsDeckSet(Database);
 				}
-				CardTable.UpdateAllCardsOldDeck(Database);
-				// update new cards
-				Database.Data = new Dictionary<string, string> {
-					{ "id", "" },
-				};
-				foreach(var entry in data) {
-					Database.Data["id"] = entry;
-					CardTable.UpdateCardNewDeck(Database);
-				}
-				// update isdeckset
-				Database.Data = new Dictionary<string, string> {
-					{ "isdeckset", "true"},
-					{ "id", CurrentUserId }
-				};
-				UserTable.UpdateIsDeckSet(Database);
 			}
 			ResponseContent = new ResponseOk("Deck was updated", true);
 		}

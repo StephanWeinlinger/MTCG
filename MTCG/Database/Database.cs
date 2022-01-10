@@ -43,6 +43,10 @@ namespace MTCG.Database {
 			try {
 				NpgsqlCommand c = _command as NpgsqlCommand;
 				foreach(KeyValuePair<string, string> entry in Data) {
+					if(entry.Value == null) {
+						c.Parameters[entry.Key].Value = DBNull.Value;
+						continue;
+					}
 					switch(Fields[entry.Key]) {
 						case NpgsqlDbType.Varchar:
 							c.Parameters[entry.Key].Value = entry.Value;
@@ -70,18 +74,22 @@ namespace MTCG.Database {
 			try {
 				NpgsqlCommand c = _command as NpgsqlCommand;
 				foreach(KeyValuePair<string, string> entry in Data) {
-						switch (Fields[entry.Key]) {
-							case NpgsqlDbType.Varchar:
-								c.Parameters[entry.Key].Value = entry.Value;
-								break;
-							case NpgsqlDbType.Integer:
-								c.Parameters[entry.Key].Value = int.Parse(entry.Value);
-								break;
-							case NpgsqlDbType.Boolean:
-								c.Parameters[entry.Key].Value = bool.Parse(entry.Value);
-								break;
-							default:
-								throw new TypeAccessException("Unhandled DB type");
+					if(entry.Value == null) {
+						c.Parameters[entry.Key].Value = DBNull.Value;
+						continue;
+					}
+					switch (Fields[entry.Key]) {
+						case NpgsqlDbType.Varchar:
+							c.Parameters[entry.Key].Value = entry.Value;
+							break;
+						case NpgsqlDbType.Integer:
+							c.Parameters[entry.Key].Value = int.Parse(entry.Value);
+							break;
+						case NpgsqlDbType.Boolean:
+							c.Parameters[entry.Key].Value = bool.Parse(entry.Value);
+							break;
+						default:
+							throw new TypeAccessException("Unhandled DB type");
 					}
 				}
 				IDataReader reader = _command.ExecuteReader();

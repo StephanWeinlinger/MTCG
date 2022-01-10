@@ -39,18 +39,6 @@ namespace MTCG.Http {
 			ParsePath();
 		}
 
-		public void Log() {
-			Console.WriteLine(Method);
-			Console.WriteLine(FullPath);
-			foreach(KeyValuePair<string, string> entry in Headers) {
-				Console.WriteLine($"{entry.Key}: {entry.Value}");
-			}
-			foreach(string entry in PathContents) {
-				Console.WriteLine($"{entry}");
-			}
-			Console.WriteLine(Content);
-		}
-
 		private void GetHead() {
 			string line = null;
 			while((line = _reader.ReadLine()) != null) {
