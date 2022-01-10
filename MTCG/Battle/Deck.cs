@@ -9,14 +9,14 @@ using MTCG.Battle.Card.Spell;
 using MTCG.Database.Storage;
 
 namespace MTCG.Battle {
-	class Deck {
+	public class Deck {
 		public int Owner { get; private set; }
-		private IList<ICard> _cards;
+		public IList<ICard> Cards;
 		private int _lastIndex;
 		public bool IsEmpty;
 
 		public Deck(IList<CardStorage> storageCards) {
-			_cards = new List<ICard>();
+			Cards = new List<ICard>();
 			_lastIndex = -1;
 			IsEmpty = false;
 			Owner = (int) storageCards[0].Owner;
@@ -25,47 +25,48 @@ namespace MTCG.Battle {
 				Element element = (Element) entry.Element;
 				switch(name) {
 					case Name.Goblin:
-						_cards.Add(new Goblin(element, entry.Damage));
+						Cards.Add(new Goblin(element, entry.Damage));
 						break;
 					case Name.Wizard:
-						_cards.Add(new Wizard(element, entry.Damage));
+						Cards.Add(new Wizard(element, entry.Damage));
 						break;
 					case Name.Dragon:
-						_cards.Add(new Dragon(element, entry.Damage));
+						Cards.Add(new Dragon(element, entry.Damage));
 						break;
 					case Name.Ork:
-						_cards.Add(new Ork(element, entry.Damage));
+						Cards.Add(new Ork(element, entry.Damage));
 						break;
 					case Name.Knight:
-						_cards.Add(new Knight(element, entry.Damage));
+						Cards.Add(new Knight(element, entry.Damage));
 						break;
 					case Name.Kraken:
-						_cards.Add(new Kraken(element, entry.Damage));
+						Cards.Add(new Kraken(element, entry.Damage));
 						break;
 					case Name.Elve:
-						_cards.Add(new Elve(element, entry.Damage));
+						Cards.Add(new Elve(element, entry.Damage));
 						break;
 					case Name.Spell:
-						_cards.Add(new Spell(element, entry.Damage));
+						Cards.Add(new Spell(element, entry.Damage));
 						break;
 				}
 			}
 		}
 
 		public ICard GetRandomCard() {
-			_lastIndex = Randomizer.GetNumber(_cards.Count);
-			return _cards[_lastIndex];
+			_lastIndex = Randomizer.GetNumber(Cards.Count);
+			return Cards[_lastIndex];
 		}
 
 		public void AddCard(ICard newCard) {
-			_cards.Add(newCard);
+			Cards.Add(newCard);
 		}
 
 		public void RemoveLastRandomCard() {
 			if(_lastIndex != -1) {
-				_cards.RemoveAt(_lastIndex);
+				Cards.RemoveAt(_lastIndex);
+				_lastIndex = -1;
 			}
-			if(_cards.Count == 0) {
+			if(Cards.Count == 0) {
 				IsEmpty = true;
 			}
 		}

@@ -6,7 +6,7 @@ using MTCG.Http;
 using MTCG.Http.ResponseContent;
 
 namespace MTCG.Handler {
-	static class RequestHandler {
+	public static class RequestHandler {
 		public static void Handle(TcpClient client) {
 			ResponseContent responseContent = new ResponseBadRequest();
 			try {

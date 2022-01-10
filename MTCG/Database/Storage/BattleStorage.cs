@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
-	class BattleStorage : IStorage {
+	public class BattleStorage : IStorage {
 		public BattleStorage(int id, int user1, int? user2) {
 			Id = id;
 			User1 = user1;

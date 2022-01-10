@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
-	interface IStorage {
+	public interface IStorage {
 	}
 }

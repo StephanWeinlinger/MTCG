@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
-	class ScoreboardStorage : IStorage {
+	public class ScoreboardStorage : IStorage {
 		public ScoreboardStorage(int userId, int elo, int wins, int losses, int draws) {
 			UserId = userId;
 			Elo = elo;

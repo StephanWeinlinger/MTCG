@@ -9,7 +9,7 @@ using MTCG.Handler;
 
 namespace MTCG.Http {
 
-	class HttpServer {
+	public class HttpServer {
 		private readonly int _port;
 
 		public HttpServer(int port) {

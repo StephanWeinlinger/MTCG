@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Battle.Card.Monster {
-	abstract class Monster : Card {
+	public abstract class Monster : Card {
 		protected Monster(Name name, Element element, int damage) : base(name, Type.Monster, element, damage) { }
 	}
 }

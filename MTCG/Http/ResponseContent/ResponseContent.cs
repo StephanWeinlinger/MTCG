@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Http.ResponseContent {
-	class ResponseContent {
+	public class ResponseContent {
 		public string Content { get; private set; }
 		public int Code { get; private set; }
 		public string Message { get; private set; }

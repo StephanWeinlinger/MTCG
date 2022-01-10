@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
-	class JoinedTradeStorage : IStorage {
+	public class JoinedTradeStorage : IStorage {
 		public JoinedTradeStorage(int id, int cardId, string cardName, string cardType, string cardElement, int cardDamage, string wantedType, string wantedElement, int minDamage, int seller) {
 			Id = id;
 			CardId = cardId;

@@ -12,7 +12,7 @@ using MTCG.Http.ResponseContent;
 using MTCG.Parse;
 
 namespace MTCG.Controller {
-	sealed class Deckcontroller : Controller {
+	public sealed class Deckcontroller : Controller {
 		public Deckcontroller(HttpRequest request) : base(request) {
 			Handle();
 		}

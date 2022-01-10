@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Battle.Card.Monster {
-	class Goblin : Monster{
+	public class Goblin : Monster{
 		public Goblin(Element element, int damage) : base(Name.Goblin, element, damage) { }
 
 		public override int GetSpecialDamage(ICard enemy) {

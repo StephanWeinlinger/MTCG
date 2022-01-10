@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Battle.Card.Monster {
-	class Dragon : Monster{
+	public class Dragon : Monster{
 		public Dragon(Element element, int damage) : base(Name.Dragon, element, damage) { }
 
 		public override int GetSpecialDamage(ICard enemy) {

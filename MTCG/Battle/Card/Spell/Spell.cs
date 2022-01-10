@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Battle.Card.Spell {
-	class Spell : Card {
+	public class Spell : Card {
 		public Spell(Element element, int damage) : base(Name.Spell, Type.Spell, element, damage) { }
 
 		public override int GetSpecialDamage(ICard enemy) {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
-	class PackageStorage : IStorage {
+	public class PackageStorage : IStorage {
 		public PackageStorage(int id, int card1, int card2, int card3, int card4, int card5) {
 			Id = id;
 			Card1 = card1;

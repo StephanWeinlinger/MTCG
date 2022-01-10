@@ -12,7 +12,7 @@ using MTCG.Http;
 using MTCG.Http.ResponseContent;
 
 namespace MTCG.Controller {
-	abstract class Controller {
+	public abstract class Controller {
 		protected Database.Database Database;
 		public HttpRequest Request;
 		public ResponseContent ResponseContent;

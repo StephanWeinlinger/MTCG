@@ -7,7 +7,7 @@ using MTCG.Battle.Card;
 using MTCG.Database.Storage;
 
 namespace MTCG.Battle {
-	class Battle {
+	public class Battle {
 		private Deck _deck1;
 		private Deck _deck2;
 		public Log.Log Log;
@@ -16,10 +16,9 @@ namespace MTCG.Battle {
 			_deck1 = new Deck(deck1);
 			_deck2 = new Deck(deck2);
 			Log = new Log.Log(_deck1.Owner, _deck2.Owner);
-			StartBattle();
 		}
 
-		private void StartBattle() {
+		public void StartBattle() {
 			for(int i = 0; i < 100; ++i) {
 				ICard card1 = _deck1.GetRandomCard();
 				ICard card2 = _deck2.GetRandomCard();
@@ -47,13 +46,13 @@ namespace MTCG.Battle {
 				}
 
 				if(_deck1.IsEmpty) {
-					Log.WinnerId = _deck1.Owner;
-					Log.LoserId = _deck2.Owner;
+					Log.WinnerId = _deck2.Owner;
+					Log.LoserId = _deck1.Owner;
 					break;
 				}
 				if(_deck2.IsEmpty) {
-					Log.WinnerId = _deck2.Owner;
-					Log.LoserId = _deck1.Owner;
+					Log.WinnerId = _deck1.Owner;
+					Log.LoserId = _deck2.Owner;
 					break;
 				}
 			}

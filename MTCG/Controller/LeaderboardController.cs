@@ -11,7 +11,7 @@ using MTCG.Http.ResponseContent;
 using MTCG.Parse;
 
 namespace MTCG.Controller {
-	sealed class LeaderboardController : Controller {
+	public sealed class LeaderboardController : Controller {
 		public LeaderboardController(HttpRequest request) : base(request) {
 			Handle();
 		}

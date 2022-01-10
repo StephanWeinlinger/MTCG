@@ -8,7 +8,7 @@ using MTCG.Database.Storage;
 using NpgsqlTypes;
 
 namespace MTCG.Database.Table {
-	static class TradeTable {
+	public static class TradeTable {
 
 		public static List<JoinedTradeStorage> GetAllTradesJoined(Database db) {
 			db.Statement = "SELECT tr.id, tr.cardid, n.text, t.text, e.text, c.damage, tw.text, ew.text, tr.mindamage, tr.seller FROM ((((((\"trade\" tr JOIN \"card\" c ON tr.cardid = c.id) JOIN \"name\" n ON c.name = n.id) JOIN \"type\" t ON c.type = t.id) JOIN \"element\" e ON c.element = e.id) LEFT JOIN \"type\" tw ON tr.wantedtype = tw.id) LEFT JOIN \"element\" ew ON tr.wantedelement = ew.id)";

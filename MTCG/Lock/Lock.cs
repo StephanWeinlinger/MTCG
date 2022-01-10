@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Lock {
-	static class Lock {
+	public static class Lock {
 		public static Object PackageLocker = new Object();
 		public static Object BattleLocker = new Object();
 		public static Object TradeInsertLocker = new Object();

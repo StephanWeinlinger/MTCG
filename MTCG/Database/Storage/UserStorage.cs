@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
-	class UserStorage : IStorage {
+	public class UserStorage : IStorage {
 		public UserStorage(int id, string username, string password, string token, bool isLoggedIn, int coins, string displayname, string bio, string status, bool isDeckSet) {
 			Id = id;
 			Username = username;

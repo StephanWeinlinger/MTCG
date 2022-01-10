@@ -13,7 +13,7 @@ using MTCG.Parse;
 using Type = MTCG.Battle.Card.Type;
 
 namespace MTCG.Controller {
-	sealed class TradeController : Controller {
+	public sealed class TradeController : Controller {
 		public TradeController(HttpRequest request) : base(request) {
 			Handle();
 		}

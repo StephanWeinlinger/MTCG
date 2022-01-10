@@ -8,7 +8,7 @@ using MTCG.Database.Storage;
 using NpgsqlTypes;
 
 namespace MTCG.Database.Table {
-	static class CardTable {
+	public static class CardTable {
 
 		public static int InsertCard(Database db) {
 			db.Statement = "INSERT INTO \"card\" (name, type, element, damage) VALUES (@name, @type, @element, @damage) RETURNING id";

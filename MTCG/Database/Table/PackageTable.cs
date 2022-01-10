@@ -8,7 +8,7 @@ using MTCG.Database.Storage;
 using NpgsqlTypes;
 
 namespace MTCG.Database.Table {
-	static class PackageTable {
+	public static class PackageTable {
 		public static PackageStorage GetFirstPackage(Database db) {
 			db.Statement = "SELECT * FROM \"package\" LIMIT 1";
 			db.Fields = new Dictionary<string, NpgsqlDbType>();

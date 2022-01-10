@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Http.ResponseContent {
-	class ResponseOk : ResponseContent {
+	public class ResponseOk : ResponseContent {
 		public ResponseOk() : base(200, "OK") {
 			Error = false;
 		}

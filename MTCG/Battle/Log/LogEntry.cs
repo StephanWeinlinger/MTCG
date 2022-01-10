@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MTCG.Battle.Card;
 
 namespace MTCG.Battle.Log {
-	class LogEntry {
+	public class LogEntry {
 		public int ActWinnerDamage;
 		public int ActLoserDamage;
 		public int BaseWinnerDamage;

@@ -8,7 +8,7 @@ using MTCG.Database.Storage;
 using NpgsqlTypes;
 
 namespace MTCG.Database.Table {
-	static class ScoreboardTable {
+	public static class ScoreboardTable {
 
 		public static ScoreboardStorage GetScoreboard(Database db) {
 			db.Statement = "SELECT * FROM \"scoreboard\" WHERE userid = @userid";

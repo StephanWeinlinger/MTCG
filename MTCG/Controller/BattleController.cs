@@ -12,7 +12,7 @@ using MTCG.Http.ResponseContent;
 using MTCG.Parse;
 
 namespace MTCG.Controller {
-	sealed class BattleController : Controller {
+	public sealed class BattleController : Controller {
 		public BattleController(HttpRequest request) : base(request) {
 			Handle();
 		}
@@ -79,6 +79,7 @@ namespace MTCG.Controller {
 				var deck2 = CardTable.GetAllCardsInDeck(Database);
 
 				Battle.Battle battle = new Battle.Battle(deck1, deck2);
+				battle.StartBattle();
 
 				Log battlelog = battle.Log;
 

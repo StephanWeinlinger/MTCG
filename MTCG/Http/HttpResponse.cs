@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Http {
-	class HttpResponse {
+	public class HttpResponse {
 		public string Content { get; set; }
 		public IDictionary<string, string> Headers { get; set; }
 

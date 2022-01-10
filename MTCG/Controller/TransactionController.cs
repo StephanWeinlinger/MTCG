@@ -11,7 +11,7 @@ using MTCG.Http.ResponseContent;
 using MTCG.Parse;
 
 namespace MTCG.Controller {
-	sealed class TransactionController : Controller {
+	public sealed class TransactionController : Controller {
 		public TransactionController(HttpRequest request) : base(request) {
 			Handle();
 		}

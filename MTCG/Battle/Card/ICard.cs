@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Battle.Card {
-	interface ICard {
+	public interface ICard {
 		Name Name { get; }
 		Type Type { get; }
 		Element Element { get; }

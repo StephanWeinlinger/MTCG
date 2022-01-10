@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Http.ResponseContent {
-	class ResponseUnauthorized : ResponseContent {
+	public class ResponseUnauthorized : ResponseContent {
 		public ResponseUnauthorized() : base(401, "Unauthorized") {
 			Error = true;
 		}

@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 // TODO check required fields if they actuallly contain something
 namespace MTCG.Parse {
-	static class JsonDeserializer {
+	public static class JsonDeserializer {
 		public static T Deserialize<T>(string content, DeserializeType type) {
 			var neededEntries = new List<string>();
 			var neededAmount = 0;

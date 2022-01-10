@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Battle.Card {
-	abstract class Card : ICard {
+	public abstract class Card : ICard {
 		public Name Name { get; }
 		public Type Type { get; }
 		public Element Element { get; }

@@ -11,7 +11,7 @@ using MTCG.Http.ResponseContent;
 using MTCG.Parse;
 
 namespace MTCG.Controller {
-	sealed class PackageController : Controller {
+	public sealed class PackageController : Controller {
 		public PackageController(HttpRequest request) : base(request) {
 			Handle();
 		}

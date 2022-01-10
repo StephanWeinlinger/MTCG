@@ -8,14 +8,14 @@ using Npgsql;
 using NpgsqlTypes;
 
 namespace MTCG.Database {
-	class Database {
+	public class Database {
 		private IDbConnection _connection;
 		private IDbCommand _command;
 		public string Statement;
 		public IDictionary<string, NpgsqlDbType> Fields;
 		public IDictionary<string, string> Data;
 		public Database() {
-			_connection = new NpgsqlConnection("Host=localhost;Username=postgres;Password=root;Database=test");
+			_connection = new NpgsqlConnection("Host=localhost;Username=postgres;Password=root;Database=mtcg");
 			_connection.Open();
 		}
 

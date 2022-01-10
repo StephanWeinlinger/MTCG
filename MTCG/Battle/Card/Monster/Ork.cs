@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Battle.Card.Monster {
-	class Ork : Monster{
+	public class Ork : Monster{
 		public Ork(Element element, int damage) : base(Name.Ork, element, damage) { }
 
 		public override int GetSpecialDamage(ICard enemy) {

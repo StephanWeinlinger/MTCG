@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Battle.Card.Monster {
-	class Kraken : Monster{
+	public class Kraken : Monster{
 		public Kraken(Element element, int damage) : base(Name.Kraken, element, damage) { }
 
 		public override int GetSpecialDamage(ICard enemy) {

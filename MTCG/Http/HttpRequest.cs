@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using MTCG.Exception;
 
 namespace MTCG.Http {
-	class HttpRequest {
+	public class HttpRequest {
 		public HttpMethod Method { get; private set; }
 		public string FullPath { get; private set; }
 		public string Content { get; private set; }

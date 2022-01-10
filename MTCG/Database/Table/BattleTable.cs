@@ -8,7 +8,7 @@ using MTCG.Database.Storage;
 using NpgsqlTypes;
 
 namespace MTCG.Database.Table {
-	static class BattleTable {
+	public static class BattleTable {
 
 		public static List<BattleStorage> GetAllBattles(Database db) {
 			db.Statement = "SELECT * FROM \"battle\"";

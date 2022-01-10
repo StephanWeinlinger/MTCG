@@ -8,7 +8,7 @@ using MTCG.Database.Storage;
 using NpgsqlTypes;
 
 namespace MTCG.Database.Table {
-	static class UserTable {
+	public static class UserTable {
 
 		public static UserStorage GetUserByToken(Database db) {
 			db.Statement = "SELECT * FROM \"user\" WHERE token = @token";

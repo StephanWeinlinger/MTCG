@@ -11,7 +11,7 @@ using MTCG.Http.ResponseContent;
 using MTCG.Parse;
 
 namespace MTCG.Controller {
-	sealed class StatController : Controller {
+	public sealed class StatController : Controller {
 		public StatController(HttpRequest request) : base(request) {
 			Handle();
 		}

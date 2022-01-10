@@ -11,7 +11,7 @@ using MTCG.Http.ResponseContent;
 using MTCG.Parse;
 
 namespace MTCG.Controller {
-	sealed class SessionController : Controller {
+	public sealed class SessionController : Controller {
 		public SessionController(HttpRequest request) : base(request) {
 			Handle();
 		}

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MTCG.Database.Storage {
-	class CardStorage : IStorage {
+	public class CardStorage : IStorage {
 		public CardStorage(int id, int? owner, int damage, int type, int element, bool inDeck, int name) {
 			Id = id;
 			Owner = owner;

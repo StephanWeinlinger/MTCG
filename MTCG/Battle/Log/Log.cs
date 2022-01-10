@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MTCG.Battle.Card;
 
 namespace MTCG.Battle.Log {
-	class Log {
+	public class Log {
 		public int Id1;
 		public int Id2;
 		public int WinnerId;
