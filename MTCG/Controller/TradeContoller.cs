@@ -135,6 +135,12 @@ namespace MTCG.Controller {
 					message = "User can't buy own card";
 				}
 				if(message != null) {
+					// give buyer card back
+					Database.Data = new Dictionary<string, string> {
+						{ "owner", CurrentUserId },
+						{ "id", card.Id.ToString() }
+					};
+					CardTable.UpdateCard(Database);
 					throw new BadRequestException(message);
 				}
 				// remove trade

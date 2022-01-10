@@ -69,7 +69,7 @@ namespace MTCG.Database.Table {
 		public static int UpdateIsDeckSet(Database db) {
 			db.Statement = "UPDATE \"user\" SET isdeckset = @isdeckset WHERE id = @id RETURNING id";
 			db.Fields = new Dictionary<string, NpgsqlDbType> {
-				{ "isloggedin", NpgsqlDbType.Boolean },
+				{ "isdeckset", NpgsqlDbType.Boolean },
 				{ "id", NpgsqlDbType.Integer }
 			};
 			db.PrepareCommand();

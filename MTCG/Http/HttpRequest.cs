@@ -25,6 +25,7 @@ namespace MTCG.Http {
 			Headers = new Dictionary<string, string>();
 			PathContents = new List<string>();
 			Method = HttpMethod.Undefined;
+			Content = "";
 			Authorization = "";
 			Parse();
 		}
@@ -32,7 +33,7 @@ namespace MTCG.Http {
 		private void Parse() {
 			GetHead();
 			// read body on POST and PUT
-			if(Method == HttpMethod.POST || Method == HttpMethod.PUT) {
+			if((Method == HttpMethod.POST || Method == HttpMethod.PUT) && Headers.ContainsKey("Content-Length")) {
 				GetContent();
 			}
 			ParseAuthorization();
@@ -64,10 +65,11 @@ namespace MTCG.Http {
 		}
 
 		private void GetContent() {
-			int length = int.Parse(Headers["Content-Length"]);
-			char[] buffer = new char[length];
-			_reader.Read(buffer, 0, length);
-			Content = new string(buffer);
+			if(int.TryParse(Headers["Content-Length"], out int length)) {
+				char[] buffer = new char[length];
+				_reader.Read(buffer, 0, length);
+				Content = new string(buffer);
+			}
 		}
 
 		private void ParseAuthorization() {

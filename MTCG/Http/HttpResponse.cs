@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace MTCG.Http {
 	class HttpResponse {
-		// DON'T FORGET TO UNSERIALIZE
 		public string Content { get; set; }
 		public IDictionary<string, string> Headers { get; set; }
 

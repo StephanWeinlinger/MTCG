@@ -75,8 +75,8 @@ namespace MTCG.Controller {
 						Database.Data = new Dictionary<string, string> {
 							{ "owner", CurrentUserId }
 						};
+						CardTable.UpdateAllCardsOldDeck(Database);
 					}
-					CardTable.UpdateAllCardsOldDeck(Database);
 					// update new cards
 					Database.Data = new Dictionary<string, string> {
 						{ "id", "" },

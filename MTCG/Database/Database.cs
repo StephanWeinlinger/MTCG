@@ -15,7 +15,7 @@ namespace MTCG.Database {
 		public IDictionary<string, NpgsqlDbType> Fields;
 		public IDictionary<string, string> Data;
 		public Database() {
-			_connection = new NpgsqlConnection("Host=localhost;Username=postgres;Password=root;Database=mtcg");
+			_connection = new NpgsqlConnection("Host=localhost;Username=postgres;Password=root;Database=test");
 			_connection.Open();
 		}
 
