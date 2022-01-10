@@ -23,6 +23,10 @@ namespace MTCG.Controller {
 					CheckAuth();
 					StartBattle();
 					break;
+				case HttpMethod.DELETE:
+					CheckAuth();
+					RemoveBattle();
+					break;
 				default:
 					ResponseContent = new ResponseNotFound();
 					break;
@@ -136,6 +140,17 @@ namespace MTCG.Controller {
 			} else {
 				ResponseContent = new ResponseOk("Started matchmaking", true);
 			}
+		}
+
+		private void RemoveBattle() {
+			Database.Data = new Dictionary<string, string> {
+					{ "user1", CurrentUserId }
+			};
+
+			if(BattleTable.DeleteBattleByUser1(Database)) {
+				throw new BadRequestException("User is currently not matchmaking");
+			}
+			ResponseContent = new ResponseOk("User was removed from matchmaking", true);
 		}
 	}
 }

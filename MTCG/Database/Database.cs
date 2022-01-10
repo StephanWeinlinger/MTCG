@@ -61,9 +61,9 @@ namespace MTCG.Database {
 			} catch(System.Exception e) {
 				Console.WriteLine("exception in database");
 				Console.WriteLine(e.Message);
-				return false;
+				return true;
 			}
-			return true;
+			return false;
 		}
 		// TODO null values dont get inserted
 		public IDataReader ExecuteCommandWithRead() {

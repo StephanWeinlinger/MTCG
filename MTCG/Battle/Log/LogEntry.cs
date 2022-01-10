@@ -23,7 +23,6 @@ namespace MTCG.Battle.Log {
 			WinnerCard = $"{winner.Type.ToString()} | {winner.Name.ToString()} | {winner.Element.ToString()}"; // Name, Type, Element
 			LoserCard = $"{loser.Type.ToString()} | {loser.Name.ToString()} | {loser.Element.ToString()}"; // Name, Type, Element
 			Message = isDraw ? $"{winner.Name.ToString()} tied against {loser.Name.ToString()}" : $"{winner.Name.ToString()} won against {loser.Name.ToString()}";
-			Console.WriteLine(Message);
 		}
 	}
 }

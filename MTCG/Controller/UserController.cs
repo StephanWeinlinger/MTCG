@@ -47,8 +47,7 @@ namespace MTCG.Controller {
 			if(user == null) {
 				throw new BadRequestException("User could not be found");
 			}
-			ResponseContent = new ResponseOk();
-			ResponseContent.SetContent(JsonSerializer.Serialize(user), false);
+			ResponseContent = new ResponseOk(JsonSerializer.Serialize(user), false);
 		}
 
 
