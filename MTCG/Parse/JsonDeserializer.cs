@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using MTCG.Exception;
 using Newtonsoft.Json;
 
-// TODO check required fields if they actuallly contain something
 namespace MTCG.Parse {
 	public static class JsonDeserializer {
 		public static T Deserialize<T>(string content, DeserializeType type) {

@@ -23,7 +23,6 @@ namespace MTCG.Database {
 			_connection.Close();
 		}
 
-		// TODO allow length for fields
 		public void PrepareCommand() {
 			_command = _connection.CreateCommand();
 			_command.CommandText = Statement;
@@ -38,7 +37,6 @@ namespace MTCG.Database {
 			c.Prepare();
 		}
 
-		// TODO maybe also use amount of executing to use prepared?
 		public bool ExecuteCommandWithoutRead() {
 			try {
 				NpgsqlCommand c = _command as NpgsqlCommand;
@@ -69,7 +67,7 @@ namespace MTCG.Database {
 			}
 			return false;
 		}
-		// TODO null values dont get inserted
+
 		public IDataReader ExecuteCommandWithRead() {
 			try {
 				NpgsqlCommand c = _command as NpgsqlCommand;
@@ -99,7 +97,6 @@ namespace MTCG.Database {
 				Console.WriteLine(e.Message);
 			}
 			return null;
-			// TODO you have to remember to close the reader
 		}
 	}
 }

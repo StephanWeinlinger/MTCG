@@ -35,7 +35,6 @@ namespace MTCG.Controller {
 			}
 		}
 
-		// TODO dont get the password
 		private void GetUser() {
 			UserStorage user = null;
 			if(Request.PathContents.Count == 2 && Request.PathContents[1] == CurrentUser.Username) {
