@@ -50,7 +50,6 @@ namespace MTCG.Controller {
 			ResponseContent = new ResponseOk(JsonSerializer.Serialize(user), false);
 		}
 
-
 		private void InsertUser() {
 			Database.Data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.REGISTER_USER);
 			Database.Data.Add("token", Database.Data["username"] + "-MTCGToken");

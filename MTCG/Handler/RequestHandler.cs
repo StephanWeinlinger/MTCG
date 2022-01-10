@@ -28,6 +28,7 @@ namespace MTCG.Handler {
 						responseContent = new TransactionController(request).ResponseContent;
 						break;
 					case "cards":
+						responseContent = new CardController(request).ResponseContent;
 						break;
 					case "deck":
 						break;
