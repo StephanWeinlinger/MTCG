@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MTCG.Crypto;
 using MTCG.Database.Storage;
 using MTCG.Database.Table;
 using MTCG.Exception;
@@ -51,6 +52,7 @@ namespace MTCG.Controller {
 
 		private void InsertUser() {
 			Database.Data = JsonDeserializer.Deserialize<Dictionary<string, string>>(Request.Content, DeserializeType.REGISTER_USER);
+			Database.Data["password"] = Hash.HashString(Database.Data["password"]);
 			Database.Data.Add("token", Database.Data["username"] + "-MTCGToken");
 			int id = UserTable.InsertUser(Database);
 			if(id == -1) {

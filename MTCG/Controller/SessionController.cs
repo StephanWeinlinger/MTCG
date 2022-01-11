@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MTCG.Crypto;
 using MTCG.Database.Storage;
 using MTCG.Database.Table;
 using MTCG.Exception;
@@ -41,7 +42,7 @@ namespace MTCG.Controller {
 			if(user == null) {
 				throw new BadRequestException("User could not be found");
 			}
-			if(data["password"] != user.Password) {
+			if(!Hash.CompareString(data["password"], user.Password)) {
 				throw new BadRequestException("Wrong password");
 			}
 			Database.Data = new Dictionary<string, string> {
