@@ -13,6 +13,11 @@ namespace MTCG.Battle.Card {
 		Knight,
 		Kraken,
 		Elve,
-		Spell
+		Spell,
+		Zombie,
+		Archer,
+		Dwarf,
+		Skeleton,
+		Hound
 	}
 }
